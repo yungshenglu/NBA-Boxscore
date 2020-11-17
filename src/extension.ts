@@ -1,13 +1,21 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 // import localize from './localize';
 import { DailyMatches } from './dailyMatches';
 import { Match } from './match';
 import { Snapshot } from './snapshot';
 
+const crawler = require('crawler');
+
 // TEST
-const dailyMatches = new DailyMatches();
+let today: string = '2020-08-07';// new Date().toISOString().substring(0, 10);
+const matchesUrl = `https://tw.global.nba.com/stats2/scores/daily.json?countryCode=TW&gameDate=${today}&locale=zh_TW`;
+
+// Commands
+const dailyMatches = new DailyMatches({
+	matchesUrl: matchesUrl,
+	matchesDate: today,
+	matchesCrawler: new crawler
+});
 let snapshots: any = {};
 
 // this method is called when your extension is activated
@@ -31,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// vscode.window.showInformationMessage(localize("extension.Welcome"));
 
 		statusBarItem.show();
-		dailyMatches.getDailyMatches((text: string) => {
+		dailyMatches.crawlMatches((text: string) => {
 			statusBarItem.text = text;
 		});
 	}));
@@ -42,22 +50,26 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('nba-boxscore.showMenu', () => {
 		let matchesList = dailyMatches.matchesList;
 		if (matchesList.length > 0 && Object.keys(snapshots).length === 0) {
-			matchesList.map((match: Match) => {
-				snapshots[match.matchLabel] = new Snapshot(match);
+			matchesList.map((match: Match, id: number) => {
+				snapshots[match.label] = new Snapshot(
+					{
+						match: match,
+						matchDate: dailyMatches.matchesDate,
+						matchScore: dailyMatches.matchesScoreList[id]
+					});
 			});
 		}
-		console.log(snapshots);
 
 		vscode.window.showQuickPick([...matchesList, { label: 'Exit extension', code: 'exit' }]).then((pickedMatch: any) => {
 			// Without picking any match
-			if (!pickedMatch) { return; };
+			if (!pickedMatch) { return; }
 
 			if (pickedMatch && pickedMatch.code === 'exit') {
 				vscode.commands.executeCommand('nba-boxscore.exit');
 				return;
 			}
 
-			snapshots[pickedMatch.matchLabel].getSnapshot();
+			snapshots[pickedMatch.label].getSnapshot();
 		});
 	}));
 

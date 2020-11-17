@@ -13,7 +13,7 @@ interface ITeamProps {
   score: Score
 }
 
-export class Team {
+export class Team implements ITeamProps {
   /* Props & Constructor */
   private _props: ITeamProps;
 
@@ -35,4 +35,22 @@ export class Team {
   get score(): Score {
     return this._props.score;
   }
+  get teamNameMarkup(): string {
+    let teamName = this._props.profile.city.zh + this._props.profile.name.zh;
+    return teamName;
+  }
+  get teamTitleMarkup(): string {
+    let teamAbbr = this._props.profile.abbr.en;
+    let teamName = this._props.profile.city.zh + this._props.profile.name.zh;
+    let teamLogoUrl = `https://tw.global.nba.com/media/img/teams/00/logos/${teamAbbr}_logo.svg`;
+    return `
+      <img src="${teamLogoUrl}" class="ui image" />
+        <h2 class="ui center aligned header">
+        ${teamName}
+      </h2>
+    `;
+  }
+
+  /* Setters */
+  /* Methods */
 }

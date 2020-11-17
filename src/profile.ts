@@ -17,7 +17,7 @@ interface IProfileProps {
   name: Lang;
 }
 
-export class Profile {
+export class Profile implements IProfileProps {
   /* Props & Constructor */
   private _props: IProfileProps;
 

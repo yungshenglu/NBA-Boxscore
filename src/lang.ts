@@ -3,11 +3,11 @@ interface ILangProps {
    * zh     : 繁體中文
    * en     : 英文
    */
-  zh: string,
-  en: string
+  zh: string;
+  en: string;
 }
 
-export class Lang {
+export class Lang implements ILangProps {
   /* Props & Constructor */
   private _props: ILangProps;
 

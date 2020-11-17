@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+
+    <style>
+      * {
+        border-radius: 0px !important;
+      }
+      .ui.table {
+        font-size: 12px;
+      }
+      .ui.table tbody tr td:first-child {
+        position: sticky;
+        left: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Main -->
+    <div class="ui container">
+      <div class="ui grid">
+        <div class="row">
+          <div class="three wide column">
+            ${homeTeamTitle}
+          </div>
+          <div class="ten wide column">
+            <p></p>
+          </div>
+          <div class="three wide column">
+            ${awayTeamTitle}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui hidden divider"></div>
+
+    <div class="ui container">
+      <div class="ui top attached tabular menu">
+        <a class="active item" data-tab="first">${homeTeamName}</a>
+        <a class="item" data-tab="second">${awayTeamName}</a>
+      </div>
+      <!-- Home-team -->
+      <div class="ui bottom attached active inverted tab segment" data-tab="first">
+        <table class="ui selectable inverted compacted small table">
+          <thead>
+            <tr class="center aligned">
+              <th data-field="name" class="two wide">球員</th>
+              <th data-field="position">位置</th>
+              <th data-field="mins">上場</th>
+              <th data-field="points">得分</th>
+              <th data-field="rebs">籃板</th>
+              <th data-field="assists">助攻</th>
+              <th data-field="steals">抄截</th>
+              <th data-field="blocks">阻攻</th>
+              <th data-field="fg">投籃</th>
+              <th data-field="tp">三分</th>
+              <th data-field="ft">罰球</th>
+              <th data-field="offRebs">進攻籃板</th>
+              <th data-field="defRebs">防守籃板</th>
+              <th data-field="turnovers">失誤</th>
+              <th data-field="fouls">犯規</th>
+              <th data-field="plusMinus">+/-</th>
+            </tr>
+          </thead>
+          <tbody>${homeTeamStat}</tbody>
+        </table>
+      </div>
+      <!-- Away-team -->
+      <div class="ui bottom attached inverted tab segment" data-tab="second">
+        <table class="ui selectable inverted compacted small table">
+          <thead>
+            <tr class="center aligned">
+              <th data-field="name" class="two wide">球員</th>
+              <th data-field="position">位置</th>
+              <th data-field="mins">上場</th>
+              <th data-field="points">得分</th>
+              <th data-field="rebs">籃板</th>
+              <th data-field="assists">助攻</th>
+              <th data-field="steals">抄截</th>
+              <th data-field="blocks">阻攻</th>
+              <th data-field="fg">投籃</th>
+              <th data-field="tp">三分</th>
+              <th data-field="ft">罰球</th>
+              <th data-field="offRebs">進攻籃板</th>
+              <th data-field="defRebs">防守籃板</th>
+              <th data-field="turnovers">失誤</th>
+              <th data-field="fouls">犯規</th>
+              <th data-field="plusMinus">+/-</th>
+            </tr>
+          </thead>
+          <tbody>${awayTeamStat}</tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  $('.menu .item').tab();
+</script>

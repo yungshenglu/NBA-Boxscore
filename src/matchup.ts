@@ -6,13 +6,13 @@ interface IMatchupProps {
    * seriesText   : (NOT SUPPORT)
    * wins         : 勝場數
    */
-  confRank: number,
-  divRank: number,
-  losses: number,
-  wins: number
+  confRank: number;
+  divRank: number;
+  losses: number;
+  wins: number;
 }
 
-export class Matchup {
+export class Matchup implements IMatchupProps {
   /* Props & Constructor */
   private _props: IMatchupProps;
 

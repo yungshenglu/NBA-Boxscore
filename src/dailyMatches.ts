@@ -1,67 +1,77 @@
-const crawler = require('crawler');
-
 import { Match } from './match';
-
-let matchesList: any = [];
-let timer: any = null;
 
 interface IDailyMatchesProps {
 	/**
-	 * dailyMatchesUrl			: 當日所有賽事的 API 連結
+	 * matchesUrl						: 當日所有賽事的 API 連結
+	 * matchesDate					: 當日賽事日期
 	 * matchesCrawler				: 賽事資訊爬蟲 
 	 * matchesList 					: 當日所有賽事
+	 * matchesScoreList			: 當日所有賽事的比分
 	 * isAllMatchesFinish		: 是否當日所有賽事已結束
 	 * timer								: 時間 (NOT SUPPORT)
 	 */
-	dailyMatchesUrl: string
-	matchesCrawler: typeof crawler,
-	matchesList: [],
-	isAllMatchesFinish: Boolean
-	timer: any
+	matchesUrl: string;
+	matchesDate: string;
+	matchesCrawler: any;
+	matchesList: [];
+	matchesScoreList: [];
+	isAllMatchesFinish: Boolean;
+	timer: any;
 }
 
-
-export class DailyMatches {
+export class DailyMatches implements IDailyMatchesProps {
 	/* Props & Constructor */
 	private _props: IDailyMatchesProps;
 
-	constructor() {
+	constructor(props: any) {
 		this._props = {
-			dailyMatchesUrl: 'https://tw.global.nba.com/stats2/scores/daily.json?countryCode=TW&gameDate=2020-08-07&locale=zh_TW',
-			matchesCrawler: new crawler(),
+			matchesUrl: props.matchesUrl,
+			matchesDate: props.matchesDate,
+			matchesCrawler: props.matchesCrawler,
 			matchesList: [],
+			matchesScoreList: [],
 			isAllMatchesFinish: false,
-			timer: null	// NOT SUPPORT
+			timer: ''	// NOT SUPPORT
 		};
 	}
 
 	/* Getters */
+	get matchesDate(): string {
+		return this._props.matchesDate;
+	}
 	get matchesList(): [] {
 		return this._props.matchesList;
 	}
-
+	get matchesScoreList(): [] {
+		return this._props.matchesScoreList;
+	}
 	get isAllMatchesFinish(): Boolean {
 		return this._props.isAllMatchesFinish;
 	}
 
 	/* Setters */
-
-	/* Methods */
-	public getDailyMatches(callback: Function) {
-		// Crawling
-		this.crawling(callback);
+	set matchesUrl(matchesUrl: string) {
+		this._props.matchesUrl = matchesUrl;
+	}
+	set matchesCrawler(matchesCrawler: any) {
+		this._props.matchesCrawler = matchesCrawler;
+	}
+	set timer(timer: any) {
+		this._props.timer = timer;
 	}
 
-	private crawling(callback: Function) {
+	/* Methods */
+	public crawlMatches(callback: Function) {
 		this._props.matchesCrawler.queue([
 			{
-				url: this._props.dailyMatchesUrl,
+				url: this._props.matchesUrl,
 				callback: (err: Error, res: any, done: Function) => {
 					try {
 						if (!err) {
-							let dailyMatches = JSON.parse(res.body).payload.date.games;
-							let dailyMatchesCount = dailyMatches.length;
-							let matchesScoreList = [];
+							let dailyMatches = JSON.parse(res.body).payload.date;
+							let dailyMatchesCount = dailyMatches ? dailyMatches.games.length : 0;
+							this._props.matchesScoreList = [];
+							this._props.matchesList = [];
 
 							if (dailyMatchesCount === 0) {
 								callback('No Matches');
@@ -69,11 +79,11 @@ export class DailyMatches {
 								return;
 							} else {
 								for (let i = 0; i < dailyMatchesCount; ++i) {
-									let match = new Match(dailyMatches[i]);
+									let match = new Match(dailyMatches.games[i]);
 									this._props.matchesList.push(match);
-									matchesScoreList.push(match.getMatchStatusText());
+									this._props.matchesScoreList.push(match.matchStatusText);
 								}
-								callback(matchesScoreList[0] + (matchesScoreList.length > 1 ? ' ...' : ''));
+								callback(this._props.matchesScoreList[0] + (this._props.matchesScoreList.length > 1 ? ' ...' : ''));
 							}
 						}
 						done();
@@ -81,10 +91,10 @@ export class DailyMatches {
 						console.log('[ERROR] ', err);
 					}
 
-					// Stop query when all matches finished
+					// Stop crawling when all matches finished
 					if (!this._props.isAllMatchesFinish) {
-						timer = setTimeout(() => {
-							this.crawling(callback);
+						this._props.timer = setTimeout(() => {
+							this.crawlMatches(callback);
 						}, 3000);
 					}
 				}

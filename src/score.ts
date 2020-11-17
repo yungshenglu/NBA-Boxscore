@@ -13,7 +13,7 @@ interface IScoreProps {
   finalScore: number;
 }
 
-export class Score {
+export class Score implements IScoreProps {
   /* Props & Constructor */
   private _props: IScoreProps;
 
