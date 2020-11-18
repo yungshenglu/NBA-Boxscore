@@ -1,5 +1,5 @@
 /**
- * NBA 球隊
+ * NBA 隊伍
  */
 export const nbaTeams = [
   { key: 'ATL', nameEn: 'Atlanta Hawks' },

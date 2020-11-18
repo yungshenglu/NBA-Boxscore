@@ -63,6 +63,12 @@ export class Profile implements IProfileProps {
   get name(): Lang {
     return this._props.name;
   }
+  get fullNameZh(): string {
+    return this._props.city.zh + this._props.name.zh;
+  }
+  get logoUrl(): string {
+    return `https://tw.global.nba.com/media/img/teams/00/logos/${this._props.abbr.en}_logo.svg`;
+  }
 
   /* Setters */
   set code(code: string) {
@@ -71,4 +77,6 @@ export class Profile implements IProfileProps {
   set division(division: string) {
     this._props.division = division;
   }
+
+  /* Methods */
 }

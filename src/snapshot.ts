@@ -1,10 +1,13 @@
+import * as vscode from 'vscode';
+import { Markup } from './markup';
+import { Match } from './match';
+
 const fs = require('fs');
 const path = require('path');
 const crawler = require('crawler');
 
-import * as vscode from 'vscode';
-import { Markup } from './markup';
-import { Match } from './match';
+const templatePath = '../template/snapshot.html';
+const template = fs.readFileSync(path.join(__dirname, templatePath));
 
 // REFACT
 interface ISnapshotProps {
@@ -19,10 +22,6 @@ interface ISnapshotProps {
    * panelId              : 該場賽事的分頁 ID
    * timer                : 時間 (NOT SUPPORTED)
    * isDisposed           : 分頁是否被開啟
-   * homeTeamTitleMarkup  : 主隊隊徽 Markup HTML
-   * awayTeamTitleMarkup  : 客隊隊徽 Markup HTML
-   * homeTeamNameMarkup   : 主隊隊名 Markup HTML
-   * awayTeamNameMarkup   : 客隊隊名 Markup HTML
    */
   match: Match;
   matchDate: string;
@@ -34,10 +33,6 @@ interface ISnapshotProps {
   panelId: string;
   timer: any;
   isDisposed: Boolean;
-  homeTeamTitleMarkup: string;
-  awayTeamTitleMarkup: string;
-  homeTeamNameMarkup: string;
-  awayTeamNameMarkup: string;
 }
 
 export class Snapshot implements ISnapshotProps {
@@ -55,11 +50,7 @@ export class Snapshot implements ISnapshotProps {
       panel: '',
       panelId: props.match.gameId,
       timer: '',  // NOT SUPPORT
-      isDisposed: false,
-      homeTeamTitleMarkup: '',
-      awayTeamTitleMarkup: '',
-      homeTeamNameMarkup: '',
-      awayTeamNameMarkup: ''
+      isDisposed: false
     };
   }
 
@@ -95,18 +86,6 @@ export class Snapshot implements ISnapshotProps {
   }
   set isDisposed(isDisposed: Boolean) {
     this._props.isDisposed = isDisposed;
-  }
-  set homeTeamTitleMarkup(homeTeamTitleMarkup: any) {
-    this._props.homeTeamTitleMarkup = homeTeamTitleMarkup;
-  }
-  set awayTeamTitleMarkup(awayTeamTitleMarkup: any) {
-    this._props.awayTeamTitleMarkup = awayTeamTitleMarkup;
-  }
-  set homeTeamNameMarkup(homeTeamNameMarkup: any) {
-    this._props.homeTeamNameMarkup = homeTeamNameMarkup;
-  }
-  set awayTeamNameMarkup(awayTeamNameMarkup: any) {
-    this._props.awayTeamNameMarkup = awayTeamNameMarkup;
   }
 
   /* Methods */
@@ -151,24 +130,20 @@ export class Snapshot implements ISnapshotProps {
           try {
             if (!err) {
               let matchSnapshot = JSON.parse(res.body).payload;
-              let matchSnapshotData = {
-                homeTeam: matchSnapshot.homeTeam.gamePlayers,
-                awayTeam: matchSnapshot.awayTeam.gamePlayers
-              };
 
-              // REFACT
-              const homeTeamStatMarkup = new Markup(matchSnapshotData.homeTeam, this._props.match.homeTeam);
-              const awayTeamStatMarkup = new Markup(matchSnapshotData.awayTeam, this._props.match.awayTeam);
+              const homeTeamMarkup = new Markup({
+                gamePlayers: matchSnapshot.homeTeam.gamePlayers,
+                team: this._props.match.homeTeam
+              });
+              const awayTeamMarkup = new Markup({
+                gamePlayers: matchSnapshot.awayTeam.gamePlayers,
+                team: this._props.match.awayTeam
+              });
 
-              this._props.homeTeamTitleMarkup = homeTeamStatMarkup.teamTitleMarkup;
-              this._props.awayTeamTitleMarkup = awayTeamStatMarkup.teamTitleMarkup;
-
-              this._props.homeTeamNameMarkup = homeTeamStatMarkup.teamNameMarkup;
-              this._props.awayTeamNameMarkup = awayTeamStatMarkup.teamNameMarkup;
-
+              // Render panel
               this._props.panel.webview.html = this.generatePanel(
-                homeTeamStatMarkup.statMarkup,
-                awayTeamStatMarkup.statMarkup
+                homeTeamMarkup,
+                awayTeamMarkup
               );
               // this.timer = setTimeout(() => {
               //     this.setPanelHtml()
@@ -184,14 +159,51 @@ export class Snapshot implements ISnapshotProps {
   }
 
   // REFACT
-  private generatePanel(homeTeamStat: string, awayTeamStat: string): string {
-    const template = fs.readFileSync(path.join(__dirname, '../template/snapshot.html'));
-    let resHtml = template.toString().replace('${homeTeamTitle}', this._props.homeTeamTitleMarkup);
-    resHtml = resHtml.toString().replace('${awayTeamTitle}', this._props.awayTeamTitleMarkup);
-    resHtml = resHtml.toString().replace('${homeTeamName}', this._props.homeTeamNameMarkup);
-    resHtml = resHtml.toString().replace('${awayTeamName}', this._props.awayTeamNameMarkup);
-    resHtml = resHtml.toString().replace('${homeTeamStat}', homeTeamStat);
-    resHtml = resHtml.toString().replace('${awayTeamStat}', awayTeamStat);
+  private generatePanel(homeTeam: Markup, awayTeam: Markup): string {
+    let resHtml = template;
+
+    // Replace team full-name
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamCityName}', homeTeam.team.profile.city.zh);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamName}', homeTeam.team.profile.name.zh);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamCityName}', awayTeam.team.profile.city.zh);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamName}', awayTeam.team.profile.name.zh);
+
+    // Replace team conference and matchup
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamConf}', homeTeam.team.profile.conference.zh);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamConfRank}', homeTeam.team.matchup.confRank);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamWins}', homeTeam.team.matchup.wins);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamLosses}', homeTeam.team.matchup.losses);
+
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamConf}', awayTeam.team.profile.conference.zh);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamConfRank}', awayTeam.team.matchup.confRank);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamWins}', awayTeam.team.matchup.wins);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamLosses}', awayTeam.team.matchup.losses);
+
+    // Replace team logo
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamLogoUrl}', homeTeam.team.profile.logoUrl);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamLogoUrl}', awayTeam.team.profile.logoUrl);
+
+    // Replace team score
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamFinalScore}', homeTeam.team.score.finalScore);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamFinalScore}', awayTeam.team.score.finalScore);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamQScores}', homeTeam.teamQScoresMarkup);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamQScores}', awayTeam.teamQScoresMarkup);
+
+    // Replace team abbr-name
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamAbbrName}', homeTeam.team.profile.abbr.zh);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamAbbrName}', awayTeam.team.profile.abbr.zh);
+
+    // Replace team profile
+    resHtml = this.replaceMarkup(resHtml, '${arenaName}', this._props.match.gameProfile.arenaName);
+    resHtml = this.replaceMarkup(resHtml, '${arenaLocation}', this._props.match.gameProfile.arenaLocation);
+
+    // Replace game players statistics
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamStat}', homeTeam.teamStatMarkup);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamStat}', awayTeam.teamStatMarkup);
+
     return resHtml;
+  }
+  private replaceMarkup(result: any, markup: string, target: string | number) {
+    return result.toString().replace(markup, target);
   }
 };

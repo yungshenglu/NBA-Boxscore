@@ -68,10 +68,11 @@ export class GamePlayer implements IGamePlayerProps {
     let playerStat = '';
     Object.keys(this._props).forEach((key: any) => {
       playerStat += `
-        <td>${this._props[key]}</td>
+        <td>
+          ${this._props[key]}
+        </td>
       `;
     });
-
     return `
       <tr class="center aligned">
         ${playerStat}

@@ -3,53 +3,56 @@ import { Team } from './team';
 
 interface IMarkupProps {
   /**
-   * statMarkup     : 球員統計資訊 HTML Markup
-   * statCount      : 球員個數
-   * teamNameMarkup : 隊伍名稱 HTML Markup
-   * teamLogoMarkup : 球隊隊徽 HTML Markup
+   * gamePlayers    : 球隊隊員
+   * team           : 隊伍
    */
-  statMarkup: string;
-  statCount: number;
-  teamTitleMarkup: string;
-  teamNameMarkup: string;
+  gamePlayers: [];
+  team: Team;
 }
 
 export class Markup implements IMarkupProps {
   /* Props & Constructor */
   private _props: IMarkupProps;
 
-  constructor(gamePlayer: [], team: Team) {
+  constructor(props: any) {
     this._props = {
-      statMarkup: this.makeStatListMarkup(gamePlayer),
-      statCount: gamePlayer.length,
-      teamTitleMarkup: team.teamTitleMarkup,
-      teamNameMarkup: team.teamNameMarkup
+      gamePlayers: props.gamePlayers,
+      team: props.team,
     };
   }
 
   /* Getters */
-  get statMarkup(): string {
-    return this._props.statMarkup;
+  get gamePlayers(): [] {
+    return this._props.gamePlayers;
   }
-  get statCount(): number {
-    return this._props.statCount;
+  get team(): Team {
+    return this._props.team;
   }
-  get teamTitleMarkup(): string {
-    return this._props.teamTitleMarkup;
+  get teamQScoresMarkup(): string {
+    let quarterScoreMarkup = `
+      <tr class="center aligned">
+        <td>${this._props.team.profile.name.zh}</td>
+        ${this._props.team.score.qScoresMarkup}
+      </tr>
+    `;
+    return quarterScoreMarkup;
   }
-  get teamNameMarkup(): string {
-    return this._props.teamNameMarkup;
+  get teamStatMarkup(): string {
+    let teamStatMarkup = '';
+    for (let i = 0; i < this._props.gamePlayers.length; ++i) {
+      let gamePlayer = new GamePlayer(this._props.gamePlayers[i]);
+      teamStatMarkup += gamePlayer.statMarkup;
+    }
+    return teamStatMarkup;
   }
 
   /* Setters */
+  set gamePlayers(gamePlayers: []) {
+    this._props.gamePlayers = gamePlayers;
+  }
+  set team(team: Team) {
+    this._props.team = team;
+  }
 
   /* Methods */
-  private makeStatListMarkup(data: []): string {
-    let statListMarkup = '';
-    for (let i = 0; i < data.length; ++i) {
-      let gamePlayer = new GamePlayer(data[i]);
-      statListMarkup += gamePlayer.statMarkup;
-    }
-    return statListMarkup;
-  }
 }

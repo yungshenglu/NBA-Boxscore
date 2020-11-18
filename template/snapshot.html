@@ -17,11 +17,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
     <style>
-      * {
-        border-radius: 0px !important;
+      body {
+        background-color: #1b262c;
       }
       .ui.table {
-        font-size: 12px;
+        /* font-size: 12px; */
       }
       .ui.table tbody tr td:first-child {
         position: sticky;
@@ -33,30 +33,85 @@
   <body>
     <!-- Main -->
     <div class="ui container">
-      <div class="ui grid">
-        <div class="row">
-          <div class="three wide column">
-            ${homeTeamTitle}
-          </div>
-          <div class="ten wide column">
-            <p></p>
-          </div>
-          <div class="three wide column">
-            ${awayTeamTitle}
+      <div class="ui top attached raised tertiary segment">
+        <div class="ui grid centered">
+          <div class="middle aligned row">
+            <!-- Away Team -->
+            <div class="three wide column">
+              <img src="${awayTeamLogoUrl}" class="ui centered small image" />
+              <h3 class="ui center aligned header" style="margin-top: 5px">
+                <div class="content">
+                  ${awayTeamName} (A)
+                  <div class="sub header">${awayTeamConf} #${awayTeamConfRank} (${awayTeamWins}-${awayTeamLosses})</div>
+                </div>
+              </h3>
+            </div>
+
+            <!-- Score --> 
+            <div class="two wide column">
+              <h1 class="ui center aligned header">
+                <div class="content">
+                  ${awayTeamFinalScore}
+                  <div class="sub header">Timeouts</div>
+                </div>
+              </h1>
+            </div>
+            <div class="five wide column center aligned">
+              <h4 class="ui center aligned header">結束</h4>
+              <table class="ui very basic collapsing small table center aligned">
+                <thead>
+                  <tr class="center aligned">
+                    <th data-field="" class="three wide"></th>
+                    <th data-field="q1">1</th>
+                    <th data-field="q2">2</th>
+                    <th data-field="q3">3</th>
+                    <th data-field="q4">4</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${awayTeamQScores}
+                  ${homeTeamQScores}
+                </tbody>
+              </table>
+            </div>
+            <div class="two wide column">
+              <h1 class="ui center aligned header">
+                <div class="content">
+                  ${homeTeamFinalScore}
+                  <div class="sub header">Timeouts</div>
+                </div>
+              </h1>
+            </div>
+
+            <!-- Home Team -->
+            <div class="three wide column">
+              <img src="${homeTeamLogoUrl}" class="ui centered small image" />
+              <h3 class="ui center aligned header" style="margin-top: 5px">
+                <div class="content">
+                  ${homeTeamName} (H)
+                  <div class="sub header">${homeTeamConf} #${homeTeamConfRank} (${homeTeamWins}-${homeTeamLosses})</div>
+                </div>
+              </h3>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="ui bottom attached center aligned secondary inverted raised segment">
+        <p>${arenaName} | ${arenaLocation}</p>
       </div>
     </div>
 
     <div class="ui hidden divider"></div>
 
+    <!-- Statistics -->
     <div class="ui container">
-      <div class="ui top attached tabular menu">
-        <a class="active item" data-tab="first">${homeTeamName}</a>
-        <a class="item" data-tab="second">${awayTeamName}</a>
+      <div class="ui top grey inverted compact menu">
+        <a class="active blue item" data-tab="away">${awayTeamAbbrName} (A)</a>
+        <a class="blue item" data-tab="home">${homeTeamAbbrName} (H)</a>
       </div>
-      <!-- Home-team -->
-      <div class="ui bottom attached active inverted tab segment" data-tab="first">
+
+      <!-- Away Team -->
+      <div class="ui active bottom secondary inverted tab raised segment" data-tab="away">
         <table class="ui selectable inverted compacted small table">
           <thead>
             <tr class="center aligned">
@@ -78,11 +133,14 @@
               <th data-field="plusMinus">+/-</th>
             </tr>
           </thead>
-          <tbody>${homeTeamStat}</tbody>
+          <tbody>
+            ${awayTeamStat}
+          </tbody>
         </table>
       </div>
-      <!-- Away-team -->
-      <div class="ui bottom attached inverted tab segment" data-tab="second">
+
+      <!-- Home Team -->
+      <div class="ui bottom secondary inverted tab raised segment" data-tab="home">
         <table class="ui selectable inverted compacted small table">
           <thead>
             <tr class="center aligned">
@@ -104,7 +162,9 @@
               <th data-field="plusMinus">+/-</th>
             </tr>
           </thead>
-          <tbody>${awayTeamStat}</tbody>
+          <tbody>
+            ${homeTeamStat}
+          </tbody>
         </table>
       </div>
     </div>
@@ -112,5 +172,5 @@
 </html>
 
 <script>
-  $('.menu .item').tab();
+  $('.menu .item').tab()
 </script>

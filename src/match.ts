@@ -1,16 +1,19 @@
 import { Team } from './team';
+import { GameProfile } from './GameProfile';
 
 interface IMatchProps {
   /**
    * homeTeam     : 主場隊伍
    * awayTeam     : 客場隊伍
-   * label        : 對戰標籤文字
-   * gameId       : 對戰 ID
+   * label        : 該場賽事標籤
+   * gameId       : 該場賽事 ID
+   * gameProfile  : 該場賽事資訊
    */
   homeTeam: Team;
   awayTeam: Team;
   label: string;
   gameId: string;
+  gameProfile: GameProfile;
 }
 
 export class Match implements IMatchProps {
@@ -22,7 +25,8 @@ export class Match implements IMatchProps {
       homeTeam: new Team(props.homeTeam),
       awayTeam: new Team(props.awayTeam),
       label: '',
-      gameId: props.profile.gameId
+      gameId: props.profile.gameId,
+      gameProfile: new GameProfile(props.profile)
     };
 
     // Set current match label
@@ -42,14 +46,17 @@ export class Match implements IMatchProps {
   get gameId(): string {
     return this._props.gameId;
   }
+  get gameProfile(): GameProfile {
+    return this._props.gameProfile;
+  }
   get matchStatusText(): string {
-    return `${this._props.homeTeam.profile.abbr.zh}  ${this._props.homeTeam.score.finalScore} : ${this._props.awayTeam.score.finalScore}  ${this._props.awayTeam.profile.abbr.zh}`;
+    return `${this._props.awayTeam.profile.abbr.zh}  ${this._props.awayTeam.score.finalScore} : ${this._props.homeTeam.score.finalScore}  ${this._props.homeTeam.profile.abbr.zh}`;
   }
 
   /* Setters */
 
   /* Methods */
   public setMatchLabel() {
-    this._props.label = `${this._props.homeTeam.profile.abbr.zh} - ${this._props.awayTeam.profile.abbr.zh}`;
+    this._props.label = `${this._props.awayTeam.profile.abbr.zh} - ${this._props.homeTeam.profile.abbr.zh}`;
   }
 }
