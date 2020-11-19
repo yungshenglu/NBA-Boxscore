@@ -44,11 +44,11 @@ export class Snapshot implements ISnapshotProps {
       match: props.match,
       matchDate: props.matchDate,
       matchScore: props.matchScore,
-      snapshotUrl: `https://tw.global.nba.com/stats2/game/snapshot.json?countryCode=TW&gameId=${props.match.gameId}&locale=zh_TW&tz=%2B8`,
+      snapshotUrl: `https://tw.global.nba.com/stats2/game/snapshot.json?countryCode=TW&gameId=${props.match.gameProfile.gameId}&locale=zh_TW&tz=%2B8`,
       snapshotHtml: '',
       snapshotCrawler: new crawler(),
       panel: '',
-      panelId: props.match.gameId,
+      panelId: props.match.gameProfile.gameId,
       timer: '',  // NOT SUPPORT
       isDisposed: false
     };
@@ -130,7 +130,6 @@ export class Snapshot implements ISnapshotProps {
           try {
             if (!err) {
               let matchSnapshot = JSON.parse(res.body).payload;
-
               const homeTeamMarkup = new Markup({
                 gamePlayers: matchSnapshot.homeTeam.gamePlayers,
                 team: this._props.match.homeTeam

@@ -3,7 +3,7 @@ interface IScoreProps {
    * qScores      : 每節比分
    * score        : 總比分
    */
-  qScores: [number, number, number, number];
+  qScores: number[];
   finalScore: number;
 }
 
@@ -24,7 +24,7 @@ export class Score implements IScoreProps {
   }
 
   /* Getters */
-  get qScores(): [number, number, number, number] {
+  get qScores(): number[] {
     return this._props.qScores;
   }
   get finalScore(): number {
@@ -43,7 +43,7 @@ export class Score implements IScoreProps {
   }
 
   /* Setters */
-  set qScores(qScores: [number, number, number, number]) {
+  set qScores(qScores: number[]) {
     this._props.qScores = qScores;
   }
   set finalScore(finalScore: number) {

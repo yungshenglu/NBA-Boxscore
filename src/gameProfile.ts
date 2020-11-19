@@ -8,7 +8,7 @@ interface IGameProfile {
    */
   arenaLocation: string;
   arenaName: string;
-  gamrId: string;
+  gameId: string;
   awayTeamId: string;
   homeTeamId: string;
 }
@@ -21,7 +21,7 @@ export class GameProfile implements IGameProfile {
     this._props = {
       arenaLocation: props.arenaLocation,
       arenaName: props.arenaName,
-      gamrId: props.gamrId,
+      gameId: props.gameId,
       awayTeamId: props.awayTeamId,
       homeTeamId: props.homeTeamId
     };
@@ -34,8 +34,8 @@ export class GameProfile implements IGameProfile {
   get arenaName(): string {
     return this._props.arenaName;
   }
-  get gamrId(): string {
-    return this._props.gamrId;
+  get gameId(): string {
+    return this._props.gameId;
   }
   get awayTeamId(): string {
     return this._props.awayTeamId;
@@ -51,8 +51,8 @@ export class GameProfile implements IGameProfile {
   set arenaName(arenaName: string) {
     this._props.arenaName = arenaName;
   }
-  set gamrId(gamrId: string) {
-    this._props.gamrId = gamrId;
+  set gameId(gamrId: string) {
+    this._props.gameId = gamrId;
   }
   set awayTeamId(awayTeamId: string) {
     this._props.awayTeamId = awayTeamId;

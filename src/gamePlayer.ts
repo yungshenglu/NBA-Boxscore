@@ -66,13 +66,14 @@ export class GamePlayer implements IGamePlayerProps {
   /* Getters */
   get statMarkup(): string {
     let playerStat = '';
-    Object.keys(this._props).forEach((key: any) => {
+    let propsKey: keyof IGamePlayerProps;
+    for (propsKey in this._props) {
       playerStat += `
         <td>
-          ${this._props[key]}
+          ${this._props[propsKey]}
         </td>
       `;
-    });
+    }
     return `
       <tr class="center aligned">
         ${playerStat}

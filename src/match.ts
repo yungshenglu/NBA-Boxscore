@@ -1,32 +1,32 @@
-import { Team } from './team';
 import { GameProfile } from './GameProfile';
+import { Boxscore } from './Boxscore';
+import { Team } from './team';
 
 interface IMatchProps {
   /**
+   * gameProfile  : 該場賽事資訊
+   * boxscore     : 該場賽事計分
    * homeTeam     : 主場隊伍
    * awayTeam     : 客場隊伍
    * label        : 該場賽事標籤
-   * gameId       : 該場賽事 ID
-   * gameProfile  : 該場賽事資訊
    */
+  gameProfile: GameProfile;
+  boxscore: Boxscore;
   homeTeam: Team;
   awayTeam: Team;
   label: string;
-  gameId: string;
-  gameProfile: GameProfile;
 }
-
 export class Match implements IMatchProps {
   /* Props & Constructor */
   private _props: IMatchProps;
 
   constructor(props: any) {
     this._props = {
+      gameProfile: new GameProfile(props.profile),
+      boxscore: new Boxscore(props.boxscore),
       homeTeam: new Team(props.homeTeam),
       awayTeam: new Team(props.awayTeam),
       label: '',
-      gameId: props.profile.gameId,
-      gameProfile: new GameProfile(props.profile)
     };
 
     // Set current match label
@@ -40,11 +40,11 @@ export class Match implements IMatchProps {
   get awayTeam(): Team {
     return this._props.awayTeam;
   }
+  get boxscore(): Boxscore {
+    return this._props.boxscore;
+  }
   get label(): string {
     return this._props.label;
-  }
-  get gameId(): string {
-    return this._props.gameId;
   }
   get gameProfile(): GameProfile {
     return this._props.gameProfile;

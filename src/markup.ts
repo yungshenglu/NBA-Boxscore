@@ -6,7 +6,7 @@ interface IMarkupProps {
    * gamePlayers    : 球隊隊員
    * team           : 隊伍
    */
-  gamePlayers: [];
+  gamePlayers: GamePlayer[];
   team: Team;
 }
 
@@ -22,7 +22,7 @@ export class Markup implements IMarkupProps {
   }
 
   /* Getters */
-  get gamePlayers(): [] {
+  get gamePlayers(): GamePlayer[] {
     return this._props.gamePlayers;
   }
   get team(): Team {
@@ -47,7 +47,7 @@ export class Markup implements IMarkupProps {
   }
 
   /* Setters */
-  set gamePlayers(gamePlayers: []) {
+  set gamePlayers(gamePlayers: GamePlayer[]) {
     this._props.gamePlayers = gamePlayers;
   }
   set team(team: Team) {

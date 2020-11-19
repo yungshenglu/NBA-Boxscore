@@ -13,8 +13,8 @@ interface IDailyMatchesProps {
 	matchesUrl: string;
 	matchesDate: string;
 	matchesCrawler: any;
-	matchesList: [];
-	matchesScoreList: [];
+	matchesList: Match[];
+	matchesScoreList: string[];
 	isAllMatchesFinish: Boolean;
 	timer: any;
 }
@@ -30,7 +30,7 @@ export class DailyMatches implements IDailyMatchesProps {
 			matchesCrawler: props.matchesCrawler,
 			matchesList: [],
 			matchesScoreList: [],
-			isAllMatchesFinish: false,
+			isAllMatchesFinish: true,
 			timer: ''	// NOT SUPPORT
 		};
 	}
@@ -39,10 +39,10 @@ export class DailyMatches implements IDailyMatchesProps {
 	get matchesDate(): string {
 		return this._props.matchesDate;
 	}
-	get matchesList(): [] {
+	get matchesList(): Match[] {
 		return this._props.matchesList;
 	}
-	get matchesScoreList(): [] {
+	get matchesScoreList(): string[] {
 		return this._props.matchesScoreList;
 	}
 	get isAllMatchesFinish(): Boolean {
@@ -82,6 +82,9 @@ export class DailyMatches implements IDailyMatchesProps {
 									let match = new Match(dailyMatches.games[i]);
 									this._props.matchesList.push(match);
 									this._props.matchesScoreList.push(match.matchStatusText);
+									if (match.boxscore.status === 2) {
+										this._props.isAllMatchesFinish = false;
+									};
 								}
 								callback(this._props.matchesScoreList[0] + (this._props.matchesScoreList.length > 1 ? ' ...' : ''));
 							}
@@ -93,6 +96,7 @@ export class DailyMatches implements IDailyMatchesProps {
 
 					// Stop crawling when all matches finished
 					if (!this._props.isAllMatchesFinish) {
+						console.log('aaaaa');
 						this._props.timer = setTimeout(() => {
 							this.crawlMatches(callback);
 						}, 3000);

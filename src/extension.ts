@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 	 */
 	context.subscriptions.push(vscode.commands.registerCommand('nba-boxscore.showMatches', () => {
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Welcome NBA-BoxScore!');
+		vscode.window.showInformationMessage('Welcome NBA-Boxscore!');
 		// vscode.window.showInformationMessage(localize("extension.Welcome"));
 
 		statusBarItem.show();
@@ -78,7 +78,7 @@ export function activate(context: vscode.ExtensionContext) {
 	 */
 	context.subscriptions.push(vscode.commands.registerCommand('nba-boxscore.exit', () => {
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Exit NBA-BoxScore.');
+		vscode.window.showInformationMessage('Exit NBA-Boxscore.');
 
 		// TEST
 		// clearInterval(getTimer());
