@@ -1,12 +1,13 @@
 {
 	"name": "nba-boxscore",
-	"displayName": "NBA-BoxScore",
+	"displayName": "NBA-Boxccore",
 	"description": "",
 	"version": "0.0.1",
-	"publisher": "yungshenglu",
+	"publisher": "David Yung-Sheng Lu",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
+	"license": "GPL-3.0",
 	"categories": [
 		"Other"
 	],
@@ -18,15 +19,15 @@
 		"commands": [
 			{
 				"command": "nba-boxscore.showMatches",
-				"title": "NBA-BoxScore: Get NBA real-time score"
+				"title": "NBA-Boxscore: Get NBA real-time score"
 			},
 			{
 				"command": "nba-boxscore.exit",
-				"title": "NBA-BoxScore: Exit NBA real-time score"
+				"title": "NBA-Boxscore: Exit NBA real-time score"
 			},
 			{
 				"command": "nba-boxscore.showMenu",
-				"title": "NBA-BoxScore: Get a live text list"
+				"title": "NBA-Boxscore: Get a live text list"
 			}
 		],
 		"keybindings": [
