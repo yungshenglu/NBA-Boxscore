@@ -1,3 +1,6 @@
+import localize from './localize';
+import { Lang } from './lang';
+
 interface IGameProfile {
   /**
    * arenaLocation    : 該場比賽地點
@@ -17,10 +20,10 @@ export class GameProfile implements IGameProfile {
   /* Props & Constructor */
   private _props: IGameProfile;
 
-  constructor(props: any) {
+  constructor(props: any, homeTeamCode: string) {
     this._props = {
-      arenaLocation: props.arenaLocation,
-      arenaName: props.arenaName,
+      arenaLocation: localize(`extension.ArenaLocation${homeTeamCode}`),
+      arenaName: localize(`extension.ArenaName${homeTeamCode}`),
       gameId: props.gameId,
       awayTeamId: props.awayTeamId,
       homeTeamId: props.homeTeamId
@@ -60,6 +63,4 @@ export class GameProfile implements IGameProfile {
   set homeTeamId(homeTeamId: string) {
     this._props.homeTeamId = homeTeamId;
   }
-
-  /* Methods */
 }

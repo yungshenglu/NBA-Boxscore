@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Markup } from './markup';
 import { Match } from './match';
+import { Lang } from './lang';
 
 const fs = require('fs');
 const path = require('path');
@@ -144,9 +145,9 @@ export class Snapshot implements ISnapshotProps {
                 homeTeamMarkup,
                 awayTeamMarkup
               );
-              // this.timer = setTimeout(() => {
-              //     this.setPanelHtml()
-              // }, 3000)
+              this.timer = setTimeout(() => {
+                this.setMarkupData();
+              }, 3000);
             }
             done();
           } catch (err) {
@@ -157,23 +158,24 @@ export class Snapshot implements ISnapshotProps {
     ]);
   }
 
-  // REFACT
   private generatePanel(homeTeam: Markup, awayTeam: Markup): string {
+    type LangKey = keyof Lang;
+    let currLang = vscode.env.language.substr(0, 2) === 'zh' ? vscode.env.language.split('-')[1] : vscode.env.language;
     let resHtml = template;
 
-    // Replace team full-name
-    resHtml = this.replaceMarkup(resHtml, '${homeTeamCityName}', homeTeam.team.profile.city.zh);
-    resHtml = this.replaceMarkup(resHtml, '${homeTeamName}', homeTeam.team.profile.name.zh);
-    resHtml = this.replaceMarkup(resHtml, '${awayTeamCityName}', awayTeam.team.profile.city.zh);
-    resHtml = this.replaceMarkup(resHtml, '${awayTeamName}', awayTeam.team.profile.name.zh);
+    // Replace team name and abbr
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamCode}', homeTeam.team.profile.code);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamName}', homeTeam.team.profile.name);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamCode}', awayTeam.team.profile.code);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamName}', awayTeam.team.profile.name);
 
     // Replace team conference and matchup
-    resHtml = this.replaceMarkup(resHtml, '${homeTeamConf}', homeTeam.team.profile.conference.zh);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamConf}', homeTeam.team.profile.conference[currLang as LangKey]);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamConfRank}', homeTeam.team.matchup.confRank);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamWins}', homeTeam.team.matchup.wins);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamLosses}', homeTeam.team.matchup.losses);
 
-    resHtml = this.replaceMarkup(resHtml, '${awayTeamConf}', awayTeam.team.profile.conference.zh);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamConf}', awayTeam.team.profile.conference[currLang as LangKey]);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamConfRank}', awayTeam.team.matchup.confRank);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamWins}', awayTeam.team.matchup.wins);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamLosses}', awayTeam.team.matchup.losses);
@@ -183,25 +185,28 @@ export class Snapshot implements ISnapshotProps {
     resHtml = this.replaceMarkup(resHtml, '${awayTeamLogoUrl}', awayTeam.team.profile.logoUrl);
 
     // Replace team score
-    resHtml = this.replaceMarkup(resHtml, '${homeTeamFinalScore}', homeTeam.team.score.finalScore);
-    resHtml = this.replaceMarkup(resHtml, '${awayTeamFinalScore}', awayTeam.team.score.finalScore);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamFinalScore}', homeTeam.team.boxscore.finalScore);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamFinalScore}', awayTeam.team.boxscore.finalScore);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamQScores}', homeTeam.teamQScoresMarkup);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamQScores}', awayTeam.teamQScoresMarkup);
 
     // Replace team abbr-name
-    resHtml = this.replaceMarkup(resHtml, '${homeTeamAbbrName}', homeTeam.team.profile.abbr.zh);
-    resHtml = this.replaceMarkup(resHtml, '${awayTeamAbbrName}', awayTeam.team.profile.abbr.zh);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamAbbrName}', homeTeam.team.profile.abbr);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamAbbrName}', awayTeam.team.profile.abbr);
 
     // Replace team profile
     resHtml = this.replaceMarkup(resHtml, '${arenaName}', this._props.match.gameProfile.arenaName);
     resHtml = this.replaceMarkup(resHtml, '${arenaLocation}', this._props.match.gameProfile.arenaLocation);
 
     // Replace game players statistics
+    resHtml = this.replaceMarkup(resHtml, '${statTableHeader}', homeTeam.teamStatTableHeader);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamStat}', homeTeam.teamStatMarkup);
+    resHtml = this.replaceMarkup(resHtml, '${statTableHeader}', awayTeam.teamStatTableHeader);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamStat}', awayTeam.teamStatMarkup);
 
     return resHtml;
   }
+
   private replaceMarkup(result: any, markup: string, target: string | number) {
     return result.toString().replace(markup, target);
   }

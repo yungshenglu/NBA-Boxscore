@@ -1,6 +1,8 @@
-import { GameProfile } from './GameProfile';
-import { Boxscore } from './Boxscore';
+import * as vscode from 'vscode';
+import { GameProfile } from './gameProfile';
+import { Score } from './score';
 import { Team } from './team';
+import { Lang } from './lang';
 
 interface IMatchProps {
   /**
@@ -11,7 +13,7 @@ interface IMatchProps {
    * label        : 該場賽事標籤
    */
   gameProfile: GameProfile;
-  boxscore: Boxscore;
+  score: Score;
   homeTeam: Team;
   awayTeam: Team;
   label: string;
@@ -22,8 +24,8 @@ export class Match implements IMatchProps {
 
   constructor(props: any) {
     this._props = {
-      gameProfile: new GameProfile(props.profile),
-      boxscore: new Boxscore(props.boxscore),
+      gameProfile: new GameProfile(props.profile, props.homeTeam.profile.abbr),
+      score: new Score(props.boxscore),
       homeTeam: new Team(props.homeTeam),
       awayTeam: new Team(props.awayTeam),
       label: '',
@@ -40,8 +42,8 @@ export class Match implements IMatchProps {
   get awayTeam(): Team {
     return this._props.awayTeam;
   }
-  get boxscore(): Boxscore {
-    return this._props.boxscore;
+  get score(): Score {
+    return this._props.score;
   }
   get label(): string {
     return this._props.label;
@@ -50,13 +52,13 @@ export class Match implements IMatchProps {
     return this._props.gameProfile;
   }
   get matchStatusText(): string {
-    return `${this._props.awayTeam.profile.abbr.zh}  ${this._props.awayTeam.score.finalScore} : ${this._props.homeTeam.score.finalScore}  ${this._props.homeTeam.profile.abbr.zh}`;
+    type LangKey = keyof Lang;
+    let currLang = vscode.env.language.substr(0, 2) === 'zh' ? vscode.env.language.split('-')[1] : vscode.env.language;
+    return `${this._props.awayTeam.profile.abbr}  ${this._props.awayTeam.boxscore.finalScore} : ${this._props.homeTeam.boxscore.finalScore}  ${this._props.homeTeam.profile.abbr}`;
   }
-
-  /* Setters */
 
   /* Methods */
   public setMatchLabel() {
-    this._props.label = `${this._props.awayTeam.profile.abbr.zh} - ${this._props.homeTeam.profile.abbr.zh}`;
+    this._props.label = this.matchStatusText;
   }
 }

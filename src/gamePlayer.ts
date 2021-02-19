@@ -1,6 +1,11 @@
-interface IGamePlayerProps {
+import * as vscode from 'vscode';
+import localize from './localize';
+import { Lang } from './lang';
+import { PLAYER_POSITION } from './utils/hardcode';
+
+export interface IGamePlayerProps {
   /**
-   * name         : 姓名
+   * player       : 姓名
    * position     : 位置
    * playingTime  : 上場時間 [mins:secs]
    * points       : 得分
@@ -8,33 +13,30 @@ interface IGamePlayerProps {
    * assists      : 助攻
    * steals       : 抄截
    * blocks       : 阻攻
-   * fg           : 投籃 [fgm-fga]
-   * fgpct        : 投籃%
-   * tp           : 三分 [tpm-tpa]
-   * tppct        : 三分%
-   * ft           : 罰球 [ftm-fta]
-   * ftpct        : 罰球%
+   * fg           : 投籃 [fgm-fga-fgp]
+   * tp           : 三分 [tpm-tpa-tpp]
+   * ft           : 罰球 [ftm-fta-ftp]
    * offRebs      : 進攻籃板
    * defRebs      : 防守籃板
    * turnovers    : 失誤
    * fouls        : 犯規
    * plusMinus    : +/-
    */
-  name: string;
+  player: string;
   position: string;
   playingTime: string;
-  points: number;
-  rebs: number;
-  assists: number;
-  steals: number;
-  blocks: number;
-  fgStat: string;
-  tpStat: string;
-  ftStat: string;
-  offRebs: number;
-  defRebs: number;
-  turnovers: number;
-  fouls: number;
+  points: number | string;
+  rebs: number | string;
+  assists: number | string;
+  steals: number | string;
+  blocks: number | string;
+  fg: string;
+  tp: string;
+  ft: string;
+  offRebs: number | string;
+  defRebs: number | string;
+  turnovers: number | string;
+  fouls: number | string;
   plusMinus: string;
 }
 
@@ -43,18 +45,20 @@ export class GamePlayer implements IGamePlayerProps {
   private _props: IGamePlayerProps;
 
   constructor(props: any) {
+    let playerPositon = this.mapPlayerPosition(props.boxscore.position);
+
     this._props = {
-      name: props.profile.displayNameEn,
-      position: props.boxscore.position || '',
+      player: props.profile.displayNameEn,
+      position: playerPositon ? localize(`extension.Position${playerPositon}`) : '',
       playingTime: this.makePlayingTime(props),
       points: props.statTotal.points,
       rebs: props.statTotal.rebs,
       assists: props.statTotal.assists,
       steals: props.statTotal.steals,
       blocks: props.statTotal.blocks,
-      fgStat: this.makeStatText(props.statTotal.fgm, props.statTotal.fga, props.statTotal.fgpct),
-      tpStat: this.makeStatText(props.statTotal.tpm, props.statTotal.tpa, props.statTotal.tppct),
-      ftStat: this.makeStatText(props.statTotal.ftm, props.statTotal.fta, props.statTotal.ftpct),
+      fg: this.makeStatText(props.statTotal.fgm, props.statTotal.fga, props.statTotal.fgpct),
+      tp: this.makeStatText(props.statTotal.tpm, props.statTotal.tpa, props.statTotal.tppct),
+      ft: this.makeStatText(props.statTotal.ftm, props.statTotal.fta, props.statTotal.ftpct),
       offRebs: props.statTotal.offRebs,
       defRebs: props.statTotal.defRebs,
       turnovers: props.statTotal.turnovers,
@@ -82,8 +86,8 @@ export class GamePlayer implements IGamePlayerProps {
   }
 
   /* Setters */
-  set name(name: string) {
-    this._props.name = name;
+  set player(player: string) {
+    this._props.player = player;
   }
   set position(position: string) {
     this._props.position = position;
@@ -106,14 +110,14 @@ export class GamePlayer implements IGamePlayerProps {
   set blocks(blocks: number) {
     this._props.blocks = blocks;
   }
-  set fgStat(fgStat: string) {
-    this._props.fgStat = fgStat;
+  set fg(fg: string) {
+    this._props.fg = fg;
   }
-  set tpStat(tpStat: string) {
-    this._props.tpStat = tpStat;
+  set tp(tp: string) {
+    this._props.tp = tp;
   }
-  set ftStat(ftStat: string) {
-    this._props.ftStat = ftStat;
+  set ft(ft: string) {
+    this._props.ft = ft;
   }
   set offRebs(offRebs: number) {
     this._props.offRebs = offRebs;
@@ -138,5 +142,8 @@ export class GamePlayer implements IGamePlayerProps {
   }
   private makeStatText(made: number, attemped: number, pct: number): string {
     return `${made}-${attemped}\n(${pct}%)`;
+  }
+  private mapPlayerPosition(name: string): string | undefined {
+    return PLAYER_POSITION.find(item => item.name === name)?.value;
   }
 }
