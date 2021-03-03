@@ -1,10 +1,14 @@
 interface ILangProps {
   /**
-   * zh     : 繁體中文
+   * tw     : 繁體中文
+   * cn     : 簡體中文
    * en     : 英文
+   * ja     : 日文
    */
-  zh: string;
+  tw: string;
+  cn: string;
   en: string;
+  ja: string;
 }
 
 export class Lang implements ILangProps {
@@ -13,24 +17,38 @@ export class Lang implements ILangProps {
 
   constructor(props: any) {
     this._props = {
-      zh: props.zh,
-      en: props.en
+      tw: props.tw,
+      cn: props.cn,
+      en: props.en,
+      ja: props.ja
     };
   }
 
   /* Getters */
-  get zh(): string {
-    return this._props.zh;
+  get tw(): string {
+    return this._props.tw;
+  }
+  get cn(): string {
+    return this._props.cn;
   }
   get en(): string {
     return this._props.en;
   }
+  get ja(): string {
+    return this._props.ja;
+  }
 
   /* Setters */
-  set zh(zh: string) {
-    this._props.zh = zh;
+  set tw(tw: string) {
+    this._props.tw = tw;
+  }
+  set cn(cn: string) {
+    this._props.cn = cn;
   }
   set en(en: string) {
     this._props.en = en;
+  }
+  set ja(ja: string) {
+    this._props.ja = ja;
   }
 }

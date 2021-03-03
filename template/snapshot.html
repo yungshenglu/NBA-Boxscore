@@ -4,11 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    
     <link
       rel="stylesheet"
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
     />
+
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -19,9 +21,6 @@
     <style>
       body {
         background-color: #1b262c;
-      }
-      .ui.table {
-        /* font-size: 12px; */
       }
       .ui.table tbody tr td:first-child {
         position: sticky;
@@ -41,8 +40,14 @@
               <img src="${awayTeamLogoUrl}" class="ui centered small image" />
               <h3 class="ui center aligned header" style="margin-top: 5px">
                 <div class="content">
+                  <div class="ui grey horizontal label" style="margin-bottom: 5px"> 
+                    ${awayTeamCode}
+                  </div>
+                  <br/>
                   ${awayTeamName} (A)
-                  <div class="sub header">${awayTeamConf} #${awayTeamConfRank} (${awayTeamWins}-${awayTeamLosses})</div>
+                  <div class="sub header">
+                    ${awayTeamConf} #${awayTeamConfRank} (${awayTeamWins}-${awayTeamLosses})
+                  </div>
                 </div>
               </h3>
             </div>
@@ -56,8 +61,19 @@
                 </div>
               </h1>
             </div>
+
             <div class="five wide column center aligned">
-              <h4 class="ui center aligned header">結束</h4>
+              <!-- 比賽狀態 -->
+              <h4 class="ui center aligned header">
+                <div class="content">
+                  <div class="ui ${statusColor} horizontal label">
+                    ${statusDesc}
+                  </div>
+                  <div class="sub header">
+                    ${periodClock}
+                  </div>
+                </div>
+              </h4>
               <table class="ui very basic small table center aligned">
                 <thead>
                   <tr class="center aligned">
@@ -88,8 +104,14 @@
               <img src="${homeTeamLogoUrl}" class="ui centered small image" />
               <h3 class="ui center aligned header" style="margin-top: 5px">
                 <div class="content">
+                  <div class="ui grey horizontal label" style="margin-bottom: 5px">
+                    ${homeTeamCode}
+                  </div>
+                  <br/>
                   ${homeTeamName} (H)
-                  <div class="sub header">${homeTeamConf} #${homeTeamConfRank} (${homeTeamWins}-${homeTeamLosses})</div>
+                  <div class="sub header">
+                    ${homeTeamConf} #${homeTeamConfRank} (${homeTeamWins}-${homeTeamLosses})
+                  </div>
                 </div>
               </h3>
             </div>
@@ -97,7 +119,9 @@
         </div>
       </div>
       <div class="ui bottom attached center aligned secondary inverted raised segment">
-        <p>${arenaName} | ${arenaLocation}</p>
+        <p>
+          ${arenaName}&nbsp;&nbsp;|&nbsp;&nbsp;${arenaLocation}
+        </p>
       </div>
     </div>
 
@@ -114,24 +138,7 @@
       <div class="ui active bottom secondary inverted tab raised segment" data-tab="away">
         <table class="ui selectable inverted compacted small table">
           <thead>
-            <tr class="center aligned">
-              <th data-field="name" class="two wide">球員</th>
-              <th data-field="position">位置</th>
-              <th data-field="mins">上場</th>
-              <th data-field="points">得分</th>
-              <th data-field="rebs">籃板</th>
-              <th data-field="assists">助攻</th>
-              <th data-field="steals">抄截</th>
-              <th data-field="blocks">阻攻</th>
-              <th data-field="fg">投籃</th>
-              <th data-field="tp">三分</th>
-              <th data-field="ft">罰球</th>
-              <th data-field="offRebs">進攻籃板</th>
-              <th data-field="defRebs">防守籃板</th>
-              <th data-field="turnovers">失誤</th>
-              <th data-field="fouls">犯規</th>
-              <th data-field="plusMinus">+/-</th>
-            </tr>
+            ${statTableHeader}
           </thead>
           <tbody>
             ${awayTeamStat}
@@ -143,24 +150,7 @@
       <div class="ui bottom secondary inverted tab raised segment" data-tab="home">
         <table class="ui selectable inverted compacted small table">
           <thead>
-            <tr class="center aligned">
-              <th data-field="name" class="two wide">球員</th>
-              <th data-field="position">位置</th>
-              <th data-field="mins">上場</th>
-              <th data-field="points">得分</th>
-              <th data-field="rebs">籃板</th>
-              <th data-field="assists">助攻</th>
-              <th data-field="steals">抄截</th>
-              <th data-field="blocks">阻攻</th>
-              <th data-field="fg">投籃</th>
-              <th data-field="tp">三分</th>
-              <th data-field="ft">罰球</th>
-              <th data-field="offRebs">進攻籃板</th>
-              <th data-field="defRebs">防守籃板</th>
-              <th data-field="turnovers">失誤</th>
-              <th data-field="fouls">犯規</th>
-              <th data-field="plusMinus">+/-</th>
-            </tr>
+            ${statTableHeader}
           </thead>
           <tbody>
             ${homeTeamStat}

@@ -1,24 +1,10 @@
-import { throws } from "assert";
-
 interface IBoxscoreProps {
   /**
-   * homeScore      : 主場球隊總分
-   * awayScore      : 客場球隊總分
-   * gameLength     : 該場賽事時間長度
-   * period         : 該場賽事該節
-   * periodClock    : 該場賽事該節時間
-   * status         : 該場賽事狀態
-   * statusDesc     : 該場賽事狀態文字
-   * ties           : 該場賽事平手
+   * qScores      : 每節比分
+   * score        : 總比分
    */
-  homeScore: number;
-  awayScore: number;
-  gameLength: string;
-  period: number;
-  periodClock: string;
-  status: number;
-  statusDesc: string;
-  ties: number;
+  qScores: number[];
+  finalScore: number;
 }
 
 export class Boxscore implements IBoxscoreProps {
@@ -27,44 +13,40 @@ export class Boxscore implements IBoxscoreProps {
 
   constructor(props: any) {
     this._props = {
-      homeScore: props.homeScore,
-      awayScore: props.awayScore,
-      gameLength: props.gameLength,
-      period: props.period,
-      periodClock: props.periodClock,
-      status: props.status,
-      statusDesc: props.statusDesc,
-      ties: props.ties
+      qScores: [
+        props.q1Score,
+        props.q2Score,
+        props.q3Score,
+        props.q4Score
+      ],
+      finalScore: props.score
     };
   }
 
   /* Getters */
-  get period(): number {
-    return this._props.period;
+  get qScores(): number[] {
+    return this._props.qScores;
   }
-  get periodClock(): string {
-    return this._props.periodClock;
+  get finalScore(): number {
+    return this._props.finalScore;
   }
-  get status(): number {
-    return this._props.status;
-  }
-  get statusDesc(): string {
-    return this._props.statusDesc;
+  get qScoresMarkup(): string {
+    let qScores = '';
+    this._props.qScores.forEach(value => {
+      qScores += `
+        <td>
+          ${value}
+        </td>
+      `;
+    });
+    return qScores;
   }
 
   /* Setters */
-  set homeScore(homeScore: number) {
-    this._props.homeScore = homeScore;
+  set qScores(qScores: number[]) {
+    this._props.qScores = qScores;
   }
-  set awayScore(awayScore: number) {
-    this._props.awayScore = awayScore;
+  set finalScore(finalScore: number) {
+    this._props.finalScore = finalScore;
   }
-  set gameLength(gameLength: string) {
-    this._props.gameLength = gameLength;
-  }
-  set ties(ties: number) {
-    this._props.ties = ties;
-  }
-
-  /* Methods */
 }

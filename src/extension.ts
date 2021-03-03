@@ -1,46 +1,42 @@
 import * as vscode from 'vscode';
-// import localize from './localize';
+import localize from './localize';
 import { DailyMatches } from './dailyMatches';
 import { Match } from './match';
 import { Snapshot } from './snapshot';
 
 const crawler = require('crawler');
-
-// TEST
-let today: string = '2020-08-07';// new Date().toISOString().substring(0, 10);
+const today: string = new Date().toISOString().substring(0, 10);
 const matchesUrl = `https://tw.global.nba.com/stats2/scores/daily.json?countryCode=TW&gameDate=${today}&locale=zh_TW`;
 
+console.log('matchesUrl: ', matchesUrl);
+console.log('lang: ', vscode.env.language);
+
 // Commands
+let currMatchIndex = 0;
 const dailyMatches = new DailyMatches({
 	matchesUrl: matchesUrl,
 	matchesDate: today,
-	matchesCrawler: new crawler
+	matchesCrawler: new crawler,
+	currMatchIndex: currMatchIndex
 });
 let snapshots: any = {};
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+// This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "nba-boxscore" is now active!');
-
 	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 	statusBarItem.command = 'nba-boxscore.showMenu';
-	statusBarItem.tooltip = 'Click';
+	statusBarItem.tooltip = localize('extension.ClickShowMatches');
 
 	/**
 	 * Get NBA real-time score (nba-boxscore.showMatches)
 	 */
 	context.subscriptions.push(vscode.commands.registerCommand('nba-boxscore.showMatches', () => {
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Welcome NBA-Boxscore!');
-		// vscode.window.showInformationMessage(localize("extension.Welcome"));
+		vscode.window.showInformationMessage(localize('extension.Welcome'));
 
 		statusBarItem.show();
 		dailyMatches.crawlMatches((text: string) => {
-			statusBarItem.text = text;
+			statusBarItem.text = `${'$(hubot)'} ${text}`;
 		});
 	}));
 
@@ -51,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 		let matchesList = dailyMatches.matchesList;
 		if (matchesList.length > 0 && Object.keys(snapshots).length === 0) {
 			matchesList.map((match: Match, id: number) => {
-				snapshots[match.label] = new Snapshot(
+				snapshots[match.gameId] = new Snapshot(
 					{
 						match: match,
 						matchDate: dailyMatches.matchesDate,
@@ -60,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 		}
 
-		vscode.window.showQuickPick([...matchesList, { label: 'Exit extension', code: 'exit' }]).then((pickedMatch: any) => {
+		vscode.window.showQuickPick([...matchesList, { label: localize('extension.Exit'), code: 'exit' }]).then((pickedMatch: any) => {
 			// Without picking any match
 			if (!pickedMatch) { return; }
 
@@ -68,8 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.commands.executeCommand('nba-boxscore.exit');
 				return;
 			}
-
-			snapshots[pickedMatch.label].getSnapshot();
+			snapshots[pickedMatch.gameId].getSnapshot();
 		});
 	}));
 
@@ -78,7 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
 	 */
 	context.subscriptions.push(vscode.commands.registerCommand('nba-boxscore.exit', () => {
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Exit NBA-Boxscore.');
+		vscode.window.showInformationMessage(localize('extension.Exit'));
 
 		// TEST
 		// clearInterval(getTimer());
@@ -87,5 +82,5 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 }
 
-// this method is called when your extension is deactivated
+// This method is called when your extension is deactivated
 export function deactivate() { }

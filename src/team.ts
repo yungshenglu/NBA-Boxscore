@@ -1,6 +1,6 @@
 import { Profile } from './profile';
 import { Matchup } from './matchup';
-import { Score } from './score';
+import { Boxscore } from './boxscore';
 
 interface ITeamProps {
   /**
@@ -10,7 +10,7 @@ interface ITeamProps {
    */
   profile: Profile
   matchup: Matchup
-  score: Score
+  boxscore: Boxscore
 }
 
 export class Team implements ITeamProps {
@@ -21,7 +21,7 @@ export class Team implements ITeamProps {
     this._props = {
       profile: new Profile(props.profile),
       matchup: new Matchup(props.matchup),
-      score: new Score(props.score)
+      boxscore: new Boxscore(props.score)
     };
   }
 
@@ -32,10 +32,7 @@ export class Team implements ITeamProps {
   get matchup(): Matchup {
     return this._props.matchup;
   }
-  get score(): Score {
-    return this._props.score;
+  get boxscore(): Boxscore {
+    return this._props.boxscore;
   }
-
-  /* Setters */
-  /* Methods */
 }

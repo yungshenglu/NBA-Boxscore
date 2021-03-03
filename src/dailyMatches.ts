@@ -1,4 +1,7 @@
+import localize from './localize';
 import { Match } from './match';
+import { sleep } from './utils/index';
+import { MATCH_STATUS } from './utils/hardcode';
 
 interface IDailyMatchesProps {
 	/**
@@ -17,6 +20,7 @@ interface IDailyMatchesProps {
 	matchesScoreList: string[];
 	isAllMatchesFinish: Boolean;
 	timer: any;
+	currMatchIndex: number
 }
 
 export class DailyMatches implements IDailyMatchesProps {
@@ -31,7 +35,8 @@ export class DailyMatches implements IDailyMatchesProps {
 			matchesList: [],
 			matchesScoreList: [],
 			isAllMatchesFinish: true,
-			timer: ''	// NOT SUPPORT
+			timer: '',	// NOT SUPPORT
+			currMatchIndex: props.currMatchIndex
 		};
 	}
 
@@ -48,6 +53,9 @@ export class DailyMatches implements IDailyMatchesProps {
 	get isAllMatchesFinish(): Boolean {
 		return this._props.isAllMatchesFinish;
 	}
+	get currMatchIndex(): number {
+		return this._props.currMatchIndex;
+	}
 
 	/* Setters */
 	set matchesUrl(matchesUrl: string) {
@@ -58,6 +66,9 @@ export class DailyMatches implements IDailyMatchesProps {
 	}
 	set timer(timer: any) {
 		this._props.timer = timer;
+	}
+	set currMatchIndex(currMatchIndex: number) {
+		this._props.currMatchIndex = currMatchIndex;
 	}
 
 	/* Methods */
@@ -74,7 +85,7 @@ export class DailyMatches implements IDailyMatchesProps {
 							this._props.matchesList = [];
 
 							if (dailyMatchesCount === 0) {
-								callback('No Matches');
+								callback(localize('extension.NoGameToday'));
 								done();
 								return;
 							} else {
@@ -82,21 +93,22 @@ export class DailyMatches implements IDailyMatchesProps {
 									let match = new Match(dailyMatches.games[i]);
 									this._props.matchesList.push(match);
 									this._props.matchesScoreList.push(match.matchStatusText);
-									if (match.boxscore.status === 2) {
+									// TODO: need to check the status code
+									if (match.score.status === MATCH_STATUS[2].key) {
 										this._props.isAllMatchesFinish = false;
 									};
 								}
-								callback(this._props.matchesScoreList[0] + (this._props.matchesScoreList.length > 1 ? ' ...' : ''));
+
+								callback(this._props.matchesScoreList[this.currMatchIndex] + (this._props.matchesScoreList.length > 1 ? ' ...' : ''));
 							}
+							done();
 						}
-						done();
 					} catch (err) {
 						console.log('[ERROR] ', err);
 					}
 
 					// Stop crawling when all matches finished
 					if (!this._props.isAllMatchesFinish) {
-						console.log('aaaaa');
 						this._props.timer = setTimeout(() => {
 							this.crawlMatches(callback);
 						}, 3000);

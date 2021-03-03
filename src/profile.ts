@@ -1,3 +1,4 @@
+import localize from './localize';
 import { Lang } from './lang';
 
 interface IProfileProps {
@@ -9,12 +10,12 @@ interface IProfileProps {
    * division     : 中文分區名稱
    * name         : 中英文隊伍名稱
    */
-  abbr: Lang
-  city: Lang;
+  abbr: string
+  city: string;
   code: string;
   conference: Lang; // Note: use ENUM to show
-  division: string; // Note: use ENUM to show
-  name: Lang;
+  division: Lang; // Note: use ENUM to show
+  name: string;
 }
 
 export class Profile implements IProfileProps {
@@ -23,32 +24,30 @@ export class Profile implements IProfileProps {
 
   constructor(props: any) {
     this._props = {
-      abbr: new Lang({
-        zh: props.displayAbbr,
-        en: props.abbr
-      }),
-      city: new Lang({
-        zh: props.city,
-        en: props.cityEn
-      }),
-      code: props.code,
+      abbr: localize(`extension.TeamAbbr${props.abbr}`),
+      city: localize(`extension.City${props.abbr}`),
+      code: props.abbr,
       conference: new Lang({
-        zh: props.displayConference,
-        en: props.conference
+        tw: props.displayConference,
+        cn: props.displayConference,
+        en: props.conference,
+        ja: props.conference
       }),
-      division: props.division,
-      name: new Lang({
-        zh: props.name,
-        en: props.nameEn
-      })
+      division: new Lang({
+        tw: props.division,
+        cn: props.division,
+        en: props.division,
+        ja: props.division
+      }),
+      name: localize(`extension.TeamAbbr${props.abbr}`),
     };
   }
 
   /* Getters */
-  get abbr(): Lang {
+  get abbr(): string {
     return this._props.abbr;
   }
-  get city(): Lang {
+  get city(): string {
     return this._props.city;
   }
   get code(): string {
@@ -57,26 +56,18 @@ export class Profile implements IProfileProps {
   get conference(): Lang {
     return this._props.conference;
   }
-  get division(): string {
+  get division(): Lang {
     return this._props.division;
   }
-  get name(): Lang {
+  get name(): string {
     return this._props.name;
   }
-  get fullNameZh(): string {
-    return this._props.city.zh + this._props.name.zh;
-  }
   get logoUrl(): string {
-    return `https://tw.global.nba.com/media/img/teams/00/logos/${this._props.abbr.en}_logo.svg`;
+    return `https://tw.global.nba.com/media/img/teams/00/logos/${this._props.code}_logo.svg`;
   }
 
   /* Setters */
   set code(code: string) {
     this._props.code = code;
   }
-  set division(division: string) {
-    this._props.division = division;
-  }
-
-  /* Methods */
 }
