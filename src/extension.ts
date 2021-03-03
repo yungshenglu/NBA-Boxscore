@@ -7,6 +7,9 @@ import { Snapshot } from './snapshot';
 const crawler = require('crawler');
 const today: string = new Date().toISOString().substring(0, 10);
 const matchesUrl = `https://tw.global.nba.com/stats2/scores/daily.json?countryCode=TW&gameDate=${today}&locale=zh_TW`;
+console.log('matchesUrl: ', matchesUrl);
+
+console.log('lang: ', vscode.env.language);
 
 console.log('matchesUrl: ', matchesUrl);
 console.log('lang: ', vscode.env.language);
