@@ -4,24 +4,13 @@ import { DailyMatches } from './dailyMatches';
 import { Match } from './match';
 import { Snapshot } from './snapshot';
 
-const crawler = require('crawler');
-const today: string = new Date().toISOString().substring(0, 10);
-const matchesUrl = `https://tw.global.nba.com/stats2/scores/daily.json?countryCode=TW&gameDate=${today}&locale=zh_TW`;
-console.log('matchesUrl: ', matchesUrl);
-
-console.log('lang: ', vscode.env.language);
-
-// Commands
 let currMatchIndex = 0;
 const dailyMatches = new DailyMatches({
-	matchesUrl: matchesUrl,
-	matchesDate: today,
-	matchesCrawler: new crawler,
+	matchesDate: new Date().toISOString().substring(0, 10),
 	currMatchIndex: currMatchIndex
 });
 let snapshots: any = {};
 
-// This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
 	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 	statusBarItem.command = 'nba-boxscore.showMenu';
@@ -35,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage(localize('extension.Welcome'));
 
 		statusBarItem.show();
-		dailyMatches.crawlMatches((text: string) => {
+		dailyMatches.parseMatches((text: string) => {
 			statusBarItem.text = `${'$(hubot)'} ${text}`;
 		});
 	}));
@@ -47,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
 		let matchesList = dailyMatches.matchesList;
 		if (matchesList.length > 0 && Object.keys(snapshots).length === 0) {
 			matchesList.map((match: Match, id: number) => {
-				snapshots[match.label] = new Snapshot(
+				snapshots[match.gameId] = new Snapshot(
 					{
 						match: match,
 						matchDate: dailyMatches.matchesDate,
@@ -56,7 +45,10 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 		}
 
-		vscode.window.showQuickPick([...matchesList, { label: localize('extension.Exit'), code: 'exit' }]).then((pickedMatch: any) => {
+		vscode.window.showQuickPick([...matchesList, {
+			label: localize('extension.Exit'),
+			code: 'exit'
+		}]).then((pickedMatch: any) => {
 			// Without picking any match
 			if (!pickedMatch) { return; }
 
@@ -64,8 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.commands.executeCommand('nba-boxscore.exit');
 				return;
 			}
-
-			snapshots[pickedMatch.label].getSnapshot();
+			snapshots[pickedMatch.gameId].getSnapshot();
 		});
 	}));
 

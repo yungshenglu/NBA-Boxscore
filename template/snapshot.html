@@ -40,7 +40,11 @@
               <img src="${awayTeamLogoUrl}" class="ui centered small image" />
               <h3 class="ui center aligned header" style="margin-top: 5px">
                 <div class="content">
-                  ${awayTeamCode}<br/>${awayTeamName} (A)
+                  <div class="ui grey horizontal label" style="margin-bottom: 5px"> 
+                    ${awayTeamCode}
+                  </div>
+                  <br/>
+                  ${awayTeamName} (A)
                   <div class="sub header">
                     ${awayTeamConf} #${awayTeamConfRank} (${awayTeamWins}-${awayTeamLosses})
                   </div>
@@ -60,7 +64,16 @@
 
             <div class="five wide column center aligned">
               <!-- 比賽狀態 -->
-              <h4 class="ui center aligned header">${gameStatus}</h4>
+              <h4 class="ui center aligned header">
+                <div class="content">
+                  <div class="ui ${statusColor} horizontal label">
+                    ${statusDesc}
+                  </div>
+                  <div class="sub header">
+                    ${periodClock}
+                  </div>
+                </div>
+              </h4>
               <table class="ui very basic small table center aligned">
                 <thead>
                   <tr class="center aligned">
@@ -91,7 +104,11 @@
               <img src="${homeTeamLogoUrl}" class="ui centered small image" />
               <h3 class="ui center aligned header" style="margin-top: 5px">
                 <div class="content">
-                  ${homeTeamCode}<br/>${homeTeamName} (H)
+                  <div class="ui grey horizontal label" style="margin-bottom: 5px">
+                    ${homeTeamCode}
+                  </div>
+                  <br/>
+                  ${homeTeamName} (H)
                   <div class="sub header">
                     ${homeTeamConf} #${homeTeamConfRank} (${homeTeamWins}-${homeTeamLosses})
                   </div>

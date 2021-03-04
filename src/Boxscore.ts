@@ -41,12 +41,4 @@ export class Boxscore implements IBoxscoreProps {
     });
     return qScores;
   }
-
-  /* Setters */
-  set qScores(qScores: number[]) {
-    this._props.qScores = qScores;
-  }
-  set finalScore(finalScore: number) {
-    this._props.finalScore = finalScore;
-  }
 }
