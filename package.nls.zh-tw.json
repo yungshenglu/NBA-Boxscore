@@ -144,8 +144,8 @@
   "extension.CityTOR": "多倫多",
   "extension.CityUTA": "猶他",
   "extension.CityWAS": "華盛頓",
-  "extension.ConfEastern": "東區聯盟",
-  "extension.ConfWestern": "西區聯盟",
+  "extension.ConfEastern": "東區",
+  "extension.ConfWestern": "西區",
   "extension.DivAtlantic": "大西洋組",
   "extension.DivCentral": "中央組",
   "extension.DivSoutheast": "東南組",
@@ -162,5 +162,6 @@
   "extension.Quarter2End": "第二節結束",
   "extension.Quarter3End": "第三節結束",
   "extension.Quarter4End": "第四節結束",
-  "extension.Postpone": "延期"
+  "extension.Postpone": "延期",
+  "extension.NoData": "無資料"
 }

@@ -144,8 +144,8 @@
   "extension.CityTOR": "토론토",
   "extension.CityUTA": "유타",
   "extension.CityWAS": "워싱턴",
-  "extension.ConfEastern": "동부 콘퍼런스",
-  "extension.ConfWestern": "서부 콘퍼런스",
+  "extension.ConfEastern": "동부",
+  "extension.ConfWestern": "서부",
   "extension.DivAtlantic": "애틀랜틱",
   "extension.DivCentral": "센트럴",
   "extension.DivSoutheast": "사우스이스트",
@@ -162,5 +162,6 @@
   "extension.Quarter2End": "Q2 End",
   "extension.Quarter3End": "Q3 End",
   "extension.Quarter4End": "Q4 End",
-  "extension.Postpone": "연기"
+  "extension.Postpone": "연기",
+  "extension.NoData": "데이터가 없습니다"
 }

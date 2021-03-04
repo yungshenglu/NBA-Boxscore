@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+import localize from './localize';
 import { GamePlayer } from './gamePlayer';
 import { Team } from './team';
 import { RenderStatTable } from './renderStatTable';
@@ -54,14 +54,13 @@ export class Markup implements IMarkupProps {
         teamStatMarkup += gamePlayer.statMarkup;
       }
     } else {
-      // FIXME: i18n
       teamStatMarkup = `
         <tr class="center aligned">
           <td colspan="16">
             <h3 class="ui icon inverted header">
               <i class="folder icon"></i>
               <div class="content">
-                No data
+                ${localize('extension.NoData')}
               </div>
             </h3>
           </td>

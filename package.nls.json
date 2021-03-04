@@ -144,8 +144,8 @@
   "extension.CityTOR": "Toronto",
   "extension.CityUTA": "Utah",
   "extension.CityWAS": "Washington",
-  "extension.ConfEastern": "Eastern Conference",
-  "extension.ConfWestern": "Western Conference",
+  "extension.ConfEastern": "Eastern",
+  "extension.ConfWestern": "Western",
   "extension.DivAtlantic": "Atlantic",
   "extension.DivCentral": "Central",
   "extension.DivSoutheast": "Southeast",
@@ -162,5 +162,6 @@
   "extension.Quarter2End": "Q2 End",
   "extension.Quarter3End": "Q3 End",
   "extension.Quarter4End": "Q4 End",
-  "extension.Postpone": "Postpone"
+  "extension.Postpone": "Postpone",
+  "extension.NoData": "No data"
 }

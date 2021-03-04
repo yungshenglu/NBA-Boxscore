@@ -144,8 +144,8 @@
   "extension.CityTOR": "多伦多",
   "extension.CityUTA": "犹他",
   "extension.CityWAS": "华盛顿",
-  "extension.ConfEastern": "东部联盟",
-  "extension.ConfWestern": "西部联盟",
+  "extension.ConfEastern": "东部",
+  "extension.ConfWestern": "西部",
   "extension.DivAtlantic": "大西洋赛区",
   "extension.DivCentral": "中部赛区",
   "extension.DivSoutheast": "东南赛区",
@@ -162,5 +162,6 @@
   "extension.Quarter2End": "第二节结束",
   "extension.Quarter3End": "第三节结束",
   "extension.Quarter4End": "第四节结束",
-  "extension.Postpone": "延期"
+  "extension.Postpone": "延期",
+  "extension.NoData": "无资料"
 }

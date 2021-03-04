@@ -144,8 +144,8 @@
   "extension.CityTOR": "トロント",
   "extension.CityUTA": "ユタ",
   "extension.CityWAS": "ワシントン",
-  "extension.ConfEastern": "イースタン・カンファレンス",
-  "extension.ConfWestern": "ウェスタン・カンファレンス",
+  "extension.ConfEastern": "イースタン",
+  "extension.ConfWestern": "ウェスタン",
   "extension.DivAtlantic": "アトランティック",
   "extension.DivCentral": "セントラル",
   "extension.DivSoutheast": "サウスイースト",
@@ -162,5 +162,6 @@
   "extension.Quarter2End": "Q2 終了",
   "extension.Quarter3End": "Q3 終了",
   "extension.Quarter4End": "Q4 終了",
-  "extension.Postpone": "後回し"
+  "extension.Postpone": "後回し",
+  "extension.NoData": "データなし"
 }
