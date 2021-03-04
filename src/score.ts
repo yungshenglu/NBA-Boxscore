@@ -31,6 +31,7 @@ export class Score implements IScoreProps {
   private _props: IScoreProps;
 
   constructor(props: any, dateTimeEt: string) {
+    // console.log('props: ', props);
     this._props = {
       homeScore: props.homeScore,
       awayScore: props.awayScore,
@@ -120,7 +121,7 @@ export class Score implements IScoreProps {
           ? `${this._props.dateTimeEt.split('T')[1]} ET`
           : localize('extension.Postpone');
       case '2': {
-        if (this._props.periodClock === '') {
+        if (this._props.periodClock === '0.0') {
           if (this._props.period === '2') {
             return localize('extension.HalfTime');
           } else {
