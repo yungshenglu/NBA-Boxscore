@@ -1,9 +1,10 @@
-# NBA-Boxscore VSCode Extension
+# NBA-Boxscore (VSCode Extension)
 
-This repository is my first practice to implement a simple NBA boxscrore extension on Visual Studio Code (VS-Code) using TypeScript. For now, we enable users to see the live score and further detail of daily matches.
+This repository is my first practice to implement a simple NBA boxscrore extension on Visual Studio Code (VSCode) using TypeScript. For now, we enable users to see the live score and further detail of daily matches.
 
 > HINT: If you have any questions, please feel free to ask me.
 
+---
 ## Features
 
 > (To be updated.)

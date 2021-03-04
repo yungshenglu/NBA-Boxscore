@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 interface ILangProps {
   /**
-   * systemLang   : VS-Code 系統語言
+   * systemLang   : VSCode 系統語言
    */
   systemLang: string
 }
