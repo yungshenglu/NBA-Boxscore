@@ -38,18 +38,4 @@ export class Matchup implements IMatchupProps {
   get wins(): number {
     return this._props.wins;
   }
-
-  /* Setters */
-  set confRank(confRank: number) {
-    this._props.confRank = confRank;
-  }
-  set divRank(divRank: number) {
-    this._props.divRank = divRank;
-  }
-  set losses(losses: number) {
-    this._props.losses = losses;
-  }
-  set wins(wins: number) {
-    this._props.wins = wins;
-  }
 }
