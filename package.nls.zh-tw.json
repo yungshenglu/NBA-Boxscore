@@ -1,10 +1,11 @@
 {
-  "extension.Welcome": "歡迎使用 NBA-Scorebox！",
+  "extension.Welcome": "歡迎使用 NBA-Boxscore！",
   "extension.NoGameToday": "今日無 NBA 賽事",
-  "extension.ShowMatches": "顯示今日 NBA 賽事",
+  "extension.Activate": "顯示今日 NBA 賽事",
   "extension.ClickShowMatches": "點擊顯示今日 NBA 賽事",
-  "extension.Exit": "離開 NBA-Scorebox",
-  "extension.ShowMenu": "顯示今日 NBA 賽事選單",
+  "extension.Exit": "離開 NBA-Boxscore",
+  "extension.ShowMenu": "顯示今日 NBA 賽程",
+  "extension.ShowHistory": "顯示過去 NBA 賽程",
   "extension.Player": "球員",
   "extension.Position": "位置",
   "extension.PlayingTime": "上場",
@@ -163,5 +164,10 @@
   "extension.Quarter3End": "第三節結束",
   "extension.Quarter4End": "第四節結束",
   "extension.Postpone": "延期",
-  "extension.NoData": "無資料"
+  "extension.NoData": "無資料",
+  "extension.Preseason": "熱身賽",
+  "extension.RegularSeason": "例行賽",
+  "extension.AllStarGame": "全明星賽",
+  "extension.Playoffs": "季後賽",
+  "extension.Finals": "總決賽"
 }

@@ -69,7 +69,6 @@ export class GamePlayer implements IGamePlayerProps {
   get statMarkup(): string {
     let playerStat = '';
     let propsKey: keyof IGamePlayerProps;
-    // console.log('this._props: ', this._props);
 
     for (propsKey in this._props) {
       if (propsKey === 'position') {

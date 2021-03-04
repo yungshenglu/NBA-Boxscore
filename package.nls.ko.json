@@ -1,10 +1,11 @@
 {
-  "extension.Welcome": "에 오신 것을 환영합니다 NBA-Scorebox!",
+  "extension.Welcome": "에 오신 것을 환영합니다 NBA-박스 스코어!",
   "extension.NoGameToday": "NBA의 게임 없음 오늘",
-  "extension.ShowMatches": "쇼 게임 오늘",
+  "extension.Activate": "쇼 게임 오늘",
   "extension.ClickShowMatches": "오늘 게임을 표시하려면 클릭",
-  "extension.Exit": "NBA-Scorebox을 종료",
+  "extension.Exit": "NBA-박스 스코어를 종료",
   "extension.ShowMenu": "쇼 게임 오늘",
+  "extension.ShowHistory": "과거에보기 게임",
   "extension.Player": "NAME",
   "extension.Position": "POS",
   "extension.PlayingTime": "MIN",
@@ -163,5 +164,10 @@
   "extension.Quarter3End": "Q3 End",
   "extension.Quarter4End": "Q4 End",
   "extension.Postpone": "연기",
-  "extension.NoData": "데이터가 없습니다"
+  "extension.NoData": "데이터가 없습니다",
+  "extension.Preseason": "프리 시즌",
+  "extension.RegularSeason": "정규 시즌",
+  "extension.AllStarGame": "올스타전",
+  "extension.Playoffs": "플레이 오프",
+  "extension.Finals": "파이널"
 }
