@@ -92,6 +92,7 @@ export class Snapshot implements ISnapshotProps {
     if (this._props.panel && !this._props.isDisposed) {
       // If we already have a panel, show it in the target column
       this._props.panel.reveal(existedPanel);
+      return;
     } else {
       this._props.isDisposed = false;
       this._props.panel = vscode.window.createWebviewPanel(
@@ -105,6 +106,7 @@ export class Snapshot implements ISnapshotProps {
           // localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'media'))]
         }
       );
+      // FIXME: Panel icon
       this._props.panel.onDidDispose(() => {
         this._props.isDisposed = true;
         clearTimeout(this._props.timer);
@@ -120,15 +122,13 @@ export class Snapshot implements ISnapshotProps {
   private setMarkupData() {
     let url = this.mapSnapshotUrl(this._props.gameId);
     axios.get(url).then((res) => {
-      console.log('res: ', res);
-
-      let matchSnapshot = res.data.payload;
+      let dataPayload = res.data.payload;
       const homeTeamMarkup = new Markup({
-        gamePlayers: matchSnapshot.homeTeam.gamePlayers,
+        gamePlayers: dataPayload.homeTeam.gamePlayers,
         team: this._props.match.homeTeam
       });
       const awayTeamMarkup = new Markup({
-        gamePlayers: matchSnapshot.awayTeam.gamePlayers,
+        gamePlayers: dataPayload.awayTeam.gamePlayers,
         team: this._props.match.awayTeam
       });
 
@@ -139,8 +139,6 @@ export class Snapshot implements ISnapshotProps {
         this._props.match
       );
       this._props.timer = setTimeout(() => {
-        console.log(homeTeamMarkup.team.boxscore.finalScore);
-        console.log(awayTeamMarkup.team.boxscore.finalScore);
         this.setMarkupData();
       }, 3000);
     }).catch((err) => {
@@ -150,6 +148,10 @@ export class Snapshot implements ISnapshotProps {
 
   private generatePanel(homeTeam: Markup, awayTeam: Markup, match: Match): string {
     let resHtml = template;
+
+    // FIXME: Not update into panel
+    console.log(homeTeam.team.profile.code, homeTeam.team.boxscore.finalScore);
+    console.log(awayTeam.team.profile.code, awayTeam.team.boxscore.finalScore);
 
     // Replace team name and abbr
     resHtml = this.replaceMarkup(resHtml, '${homeTeamCode}', homeTeam.team.profile.code);
@@ -186,6 +188,10 @@ export class Snapshot implements ISnapshotProps {
     // Replace team abbr-name
     resHtml = this.replaceMarkup(resHtml, '${homeTeamAbbrName}', homeTeam.team.profile.abbr);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamAbbrName}', awayTeam.team.profile.abbr);
+
+    // Replace date and type of game
+    resHtml = this.replaceMarkup(resHtml, '${gameDateTime}', this._props.match.gameProfile.gameDateTime);
+    resHtml = this.replaceMarkup(resHtml, '${gameType}', this._props.match.gameProfile.gameType);
 
     // Replace team profile
     resHtml = this.replaceMarkup(resHtml, '${arenaName}', this._props.match.gameProfile.arenaName);

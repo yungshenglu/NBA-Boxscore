@@ -12,7 +12,7 @@ interface IScoreProps {
    * statusDesc     : 該場賽事狀態文字
    * statusColor    : 該場賽事狀態文字顏色
    * ties           : 該場賽事平手 (NOT SUPPORT)
-   * dateTimeEt     : 該場賽事日期時間
+   * timeEt         : 該場賽事時間
    */
   homeScore: number;
   awayScore: number;
@@ -23,7 +23,7 @@ interface IScoreProps {
   statusDesc: string;
   statusColor: string;
   ties: string;
-  dateTimeEt: string;
+  timeEt: string;
 }
 
 export class Score implements IScoreProps {
@@ -31,7 +31,6 @@ export class Score implements IScoreProps {
   private _props: IScoreProps;
 
   constructor(props: any, dateTimeEt: string) {
-    // console.log('props: ', props);
     this._props = {
       homeScore: props.homeScore,
       awayScore: props.awayScore,
@@ -42,7 +41,7 @@ export class Score implements IScoreProps {
       statusDesc: '',
       statusColor: '',
       ties: props.ties,
-      dateTimeEt: dateTimeEt
+      timeEt: `${dateTimeEt.split('T')[1]} ET`
     };
 
     this._props.statusDesc = this.mapMatchStatusDesc(props.statusDesc);
@@ -77,40 +76,8 @@ export class Score implements IScoreProps {
   get ties(): string {
     return this._props.ties;
   }
-  get dateTimeEt(): string {
-    return this._props.dateTimeEt;
-  }
-
-  /* Setters */
-  set homeScore(homeScore: number) {
-    this._props.homeScore = homeScore;
-  }
-  set awayScore(awayScore: number) {
-    this._props.awayScore = awayScore;
-  }
-  set gameLength(gameLength: string) {
-    this._props.gameLength = gameLength;
-  }
-  set period(period: string) {
-    this._props.period = period;
-  }
-  set periodClock(periodClock: string) {
-    this._props.periodClock = periodClock;
-  }
-  set status(status: string) {
-    this._props.status = status;
-  }
-  set statusDesc(statusDesc: string) {
-    this._props.statusDesc = statusDesc;
-  }
-  set statusColor(statusColor: string) {
-    this._props.statusColor = statusColor;
-  }
-  set ties(ties: string) {
-    this._props.ties = ties;
-  }
-  set dateTimeEt(dateTimeEt: string) {
-    this._props.dateTimeEt = dateTimeEt;
+  get timeEt(): string {
+    return this._props.timeEt;
   }
 
   /* Methods */
@@ -118,7 +85,7 @@ export class Score implements IScoreProps {
     switch (this._props.status) {
       case '1':
         return originalDesc !== '延期'
-          ? `${this._props.dateTimeEt.split('T')[1]} ET`
+          ? this._props.timeEt
           : localize('extension.Postpone');
       case '2': {
         if (this._props.periodClock === '0.0') {

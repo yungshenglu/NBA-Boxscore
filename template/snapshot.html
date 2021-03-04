@@ -118,10 +118,19 @@
           </div>
         </div>
       </div>
-      <div class="ui bottom attached center aligned secondary inverted raised segment">
-        <p>
-          ${arenaName}&nbsp;&nbsp;|&nbsp;&nbsp;${arenaLocation}
-        </p>
+
+      <div class="ui bottom attached center aligned secondary inverted raised horizontal segment">
+        <div class="ui grid">
+          <div class="eight wide column">
+            ${gameDateTime}&nbsp;&nbsp;|&nbsp;&nbsp;
+            <div class="ui basic horizontal label">
+              ${gameType}
+            </div>
+          </div>
+          <div class="eight wide column">
+            ${arenaName}&nbsp;&nbsp;|&nbsp;&nbsp;${arenaLocation}
+          </div>
+        </div>
       </div>
     </div>
 
