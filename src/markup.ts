@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { GamePlayer } from './gamePlayer';
 import { Team } from './team';
 import { RenderStatTable } from './renderStatTable';
-import { Lang } from './lang';
 
 interface IMarkupProps {
   /**
@@ -32,9 +31,6 @@ export class Markup implements IMarkupProps {
     return this._props.team;
   }
   get teamQScoresMarkup(): string {
-    type LangKey = keyof Lang;
-    let currLang = vscode.env.language.substr(0, 2) === 'zh' ? vscode.env.language.split('-')[1] : vscode.env.language;
-
     let quarterScoreMarkup = `
       <tr class="center aligned">
         <td>
@@ -58,6 +54,7 @@ export class Markup implements IMarkupProps {
         teamStatMarkup += gamePlayer.statMarkup;
       }
     } else {
+      // FIXME: i18n
       teamStatMarkup = `
         <tr class="center aligned">
           <td colspan="16">
@@ -74,14 +71,4 @@ export class Markup implements IMarkupProps {
 
     return teamStatMarkup;
   }
-
-  /* Setters */
-  set gamePlayers(gamePlayers: GamePlayer[]) {
-    this._props.gamePlayers = gamePlayers;
-  }
-  set team(team: Team) {
-    this._props.team = team;
-  }
-
-  /* Methods */
 }

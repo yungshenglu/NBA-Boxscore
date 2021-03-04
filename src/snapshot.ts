@@ -1,37 +1,32 @@
 import * as vscode from 'vscode';
+import axios from 'axios';
 import { Markup } from './markup';
 import { Match } from './match';
-import { Lang } from './lang';
+import { API_URL } from './utils/hardcode';
 
 const fs = require('fs');
 const path = require('path');
-const crawler = require('crawler');
 
 const templatePath = '../template/snapshot.html';
 const template = fs.readFileSync(path.join(__dirname, templatePath));
 
-// REFACT
 interface ISnapshotProps {
   /**
    * match                : 該場賽事資訊
    * matchDate            : 該場賽事日期
    * matchScore           : 該場賽事當下比分
-   * snapshotUrl          : 該場賽事詳細資訊 API 連結
+   * gameId               : 該場賽事 ID
    * snapshotHtml         : 該場賽事的 HTML
-   * snapshotCrawler      : 該場賽事爬蟲
    * panel                : 該場賽事的分頁
-   * panelId              : 該場賽事的分頁 ID
    * timer                : 時間 (NOT SUPPORT)
    * isDisposed           : 分頁是否被開啟
    */
   match: Match;
   matchDate: string;
   matchScore: string;
-  snapshotUrl: string;
+  gameId: string;
   snapshotHtml: string;
-  snapshotCrawler: typeof crawler;
   panel: any;
-  panelId: string;
   timer: any;
   isDisposed: Boolean;
 }
@@ -45,51 +40,50 @@ export class Snapshot implements ISnapshotProps {
       match: props.match,
       matchDate: props.matchDate,
       matchScore: props.matchScore,
-      snapshotUrl: `https://tw.global.nba.com/stats2/game/snapshot.json?countryCode=TW&gameId=${props.match.gameProfile.gameId}&locale=zh_TW&tz=%2B8`,
+      gameId: props.match.gameProfile.gameId,
       snapshotHtml: '',
-      snapshotCrawler: new crawler(),
       panel: '',
-      panelId: props.match.gameProfile.gameId,
       timer: '',  // NOT SUPPORT
       isDisposed: false
     };
   }
 
   /* Getters */
-
-  /* Setters */
-  set match(match: Match) {
-    this._props.match = match;
+  get match(): Match {
+    return this._props.match;
   }
-  set matchDate(matchDate: string) {
-    this._props.matchDate = matchDate;
+  get matchDate(): string {
+    return this._props.matchDate;
   }
-  set matchScore(matchScore: string) {
-    this._props.matchScore = matchScore;
+  get matchScore(): string {
+    return this._props.matchScore;
   }
-  set snapshotUrl(snapshotUrl: string) {
-    this._props.snapshotUrl = snapshotUrl;
+  get gameId(): string {
+    return this._props.gameId;
   }
-  set snapshotHtml(snapshotHtml: string) {
-    this._props.snapshotHtml = snapshotHtml;
+  get snapshotHtml(): string {
+    return this._props.snapshotHtml;
   }
-  set snapshotCrawler(snapshotCrawler: typeof crawler) {
-    this._props.snapshotCrawler = snapshotCrawler;
+  get panel(): any {
+    return this._props.panel;
   }
-  set panel(panel: any) {
-    this._props.panel = panel;
+  // NOT SUPPORT
+  get timer(): any {
+    return this._props.timer;
   }
-  set panelId(panelId: string) {
-    this._props.panelId = panelId;
-  }
-  set timer(timer: any) {
-    this._props.timer = timer;
-  }
-  set isDisposed(isDisposed: Boolean) {
-    this._props.isDisposed = isDisposed;
+  get isDisposed(): Boolean {
+    return this._props.isDisposed;
   }
 
   /* Methods */
+  private mapSnapshotUrl(gameId: string): string {
+    let apiUrl = API_URL.find(item => item.name === 'snapshot')?.url || '';
+    let snapshotUrl = apiUrl !== ''
+      ? apiUrl.replace('{gameId}', gameId)
+      : apiUrl;
+    return snapshotUrl;
+  }
+
   public getSnapshot() {
     const existedPanel: any = vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.viewColumn
@@ -101,7 +95,7 @@ export class Snapshot implements ISnapshotProps {
     } else {
       this._props.isDisposed = false;
       this._props.panel = vscode.window.createWebviewPanel(
-        this._props.panelId,
+        this._props.gameId,
         this._props.match.label,
         existedPanel,
         {
@@ -124,46 +118,37 @@ export class Snapshot implements ISnapshotProps {
   }
 
   private setMarkupData() {
-    this._props.snapshotCrawler.queue([
-      {
-        url: this._props.snapshotUrl,
-        callback: (err: Error, res: any, done: Function) => {
-          try {
-            if (!err) {
-              let matchSnapshot = JSON.parse(res.body).payload;
-              const homeTeamMarkup = new Markup({
-                gamePlayers: matchSnapshot.homeTeam.gamePlayers,
-                team: this._props.match.homeTeam
-              });
-              const awayTeamMarkup = new Markup({
-                gamePlayers: matchSnapshot.awayTeam.gamePlayers,
-                team: this._props.match.awayTeam
-              });
+    let url = this.mapSnapshotUrl(this._props.gameId);
+    axios.get(url).then((res) => {
+      console.log('res: ', res);
 
-              // Render panel
-              this._props.panel.webview.html = this.generatePanel(
-                homeTeamMarkup,
-                awayTeamMarkup,
-                this._props.match
-              );
-              this.timer = setTimeout(() => {
-                // console.log(homeTeamMarkup.team.boxscore.finalScore);
-                // console.log(awayTeamMarkup.team.boxscore.finalScore);
-                this.setMarkupData();
-              }, 3000);
-            }
-            done();
-          } catch (err) {
-            console.log('[ERROR] ', err);
-          }
-        }
-      }
-    ]);
+      let matchSnapshot = res.data.payload;
+      const homeTeamMarkup = new Markup({
+        gamePlayers: matchSnapshot.homeTeam.gamePlayers,
+        team: this._props.match.homeTeam
+      });
+      const awayTeamMarkup = new Markup({
+        gamePlayers: matchSnapshot.awayTeam.gamePlayers,
+        team: this._props.match.awayTeam
+      });
+
+      // Render panel
+      this._props.panel.webview.html = this.generatePanel(
+        homeTeamMarkup,
+        awayTeamMarkup,
+        this._props.match
+      );
+      this._props.timer = setTimeout(() => {
+        console.log(homeTeamMarkup.team.boxscore.finalScore);
+        console.log(awayTeamMarkup.team.boxscore.finalScore);
+        this.setMarkupData();
+      }, 3000);
+    }).catch((err) => {
+      console.log('[ERROR] ', err);
+    });
   }
 
   private generatePanel(homeTeam: Markup, awayTeam: Markup, match: Match): string {
-    type LangKey = keyof Lang;
-    let currLang = vscode.env.language.substr(0, 2) === 'zh' ? vscode.env.language.split('-')[1] : vscode.env.language;
     let resHtml = template;
 
     // Replace team name and abbr
@@ -173,12 +158,12 @@ export class Snapshot implements ISnapshotProps {
     resHtml = this.replaceMarkup(resHtml, '${awayTeamName}', awayTeam.team.profile.name);
 
     // Replace team conference and matchup
-    resHtml = this.replaceMarkup(resHtml, '${homeTeamConf}', homeTeam.team.profile.conference[currLang as LangKey]);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamConf}', homeTeam.team.profile.conference);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamConfRank}', homeTeam.team.matchup.confRank);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamWins}', homeTeam.team.matchup.wins);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamLosses}', homeTeam.team.matchup.losses);
 
-    resHtml = this.replaceMarkup(resHtml, '${awayTeamConf}', awayTeam.team.profile.conference[currLang as LangKey]);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamConf}', awayTeam.team.profile.conference);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamConfRank}', awayTeam.team.matchup.confRank);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamWins}', awayTeam.team.matchup.wins);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamLosses}', awayTeam.team.matchup.losses);

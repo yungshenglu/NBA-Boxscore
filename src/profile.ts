@@ -1,5 +1,5 @@
 import localize from './localize';
-import { Lang } from './lang';
+import { API_URL, DIVISION } from './utils/hardcode';
 
 interface IProfileProps {
   /**
@@ -9,13 +9,15 @@ interface IProfileProps {
    * conference   : 英文聯盟名稱
    * division     : 中文分區名稱
    * name         : 中英文隊伍名稱
+   * logoUrl      : 隊徽網址
    */
   abbr: string
   city: string;
   code: string;
-  conference: Lang; // Note: use ENUM to show
-  division: Lang; // Note: use ENUM to show
+  conference: string;
+  division: string;
   name: string;
+  logoUrl: string;
 }
 
 export class Profile implements IProfileProps {
@@ -27,19 +29,10 @@ export class Profile implements IProfileProps {
       abbr: localize(`extension.TeamAbbr${props.abbr}`),
       city: localize(`extension.City${props.abbr}`),
       code: props.abbr,
-      conference: new Lang({
-        tw: props.displayConference,
-        cn: props.displayConference,
-        en: props.conference,
-        ja: props.conference
-      }),
-      division: new Lang({
-        tw: props.division,
-        cn: props.division,
-        en: props.division,
-        ja: props.division
-      }),
+      conference: localize(`extension.Conf${props.conference}`),
+      division: localize(`extension.Div${this.mapDivison(props.division)}`),
       name: localize(`extension.TeamAbbr${props.abbr}`),
+      logoUrl: this.mapLogoUrl(props.abbr)
     };
   }
 
@@ -53,21 +46,29 @@ export class Profile implements IProfileProps {
   get code(): string {
     return this._props.code;
   }
-  get conference(): Lang {
+  get conference(): string {
     return this._props.conference;
   }
-  get division(): Lang {
+  get division(): string {
     return this._props.division;
   }
   get name(): string {
     return this._props.name;
   }
   get logoUrl(): string {
-    return `https://tw.global.nba.com/media/img/teams/00/logos/${this._props.code}_logo.svg`;
+    return this._props.logoUrl;
   }
 
-  /* Setters */
-  set code(code: string) {
-    this._props.code = code;
+  /* Methods */
+  private mapDivison(data: string): string {
+    return DIVISION.find(item => item.name === data)?.key || '';
+  }
+
+  private mapLogoUrl(teamCode: string): string {
+    let apiUrl = API_URL.find(item => item.name === 'logo')?.url || '';
+    let logoUrl = apiUrl !== ''
+      ? apiUrl.replace('{teamCode}', teamCode)
+      : apiUrl;
+    return logoUrl;
   }
 }

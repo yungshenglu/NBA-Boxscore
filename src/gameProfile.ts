@@ -1,5 +1,4 @@
 import localize from './localize';
-import { Lang } from './lang';
 
 interface IGameProfile {
   /**
@@ -45,22 +44,5 @@ export class GameProfile implements IGameProfile {
   }
   get homeTeamId(): string {
     return this._props.homeTeamId;
-  }
-
-  /* Setters */
-  set arenaLocation(arenaLocation: string) {
-    this._props.arenaLocation = arenaLocation;
-  }
-  set arenaName(arenaName: string) {
-    this._props.arenaName = arenaName;
-  }
-  set gameId(gamrId: string) {
-    this._props.gameId = gamrId;
-  }
-  set awayTeamId(awayTeamId: string) {
-    this._props.awayTeamId = awayTeamId;
-  }
-  set homeTeamId(homeTeamId: string) {
-    this._props.homeTeamId = homeTeamId;
   }
 }

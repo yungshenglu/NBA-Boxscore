@@ -1,8 +1,6 @@
-import * as vscode from 'vscode';
 import { GameProfile } from './gameProfile';
 import { Score } from './score';
 import { Team } from './team';
-import { Lang } from './lang';
 
 interface IMatchProps {
   /**
@@ -58,8 +56,6 @@ export class Match implements IMatchProps {
     return this._props.label;
   }
   get matchStatusText(): string {
-    type LangKey = keyof Lang;
-    let currLang = vscode.env.language.substr(0, 2) === 'zh' ? vscode.env.language.split('-')[1] : vscode.env.language;
     return `${this._props.awayTeam.profile.abbr}  ${this._props.awayTeam.boxscore.finalScore} : ${this._props.homeTeam.boxscore.finalScore}  ${this._props.homeTeam.profile.abbr}`;
   }
 
