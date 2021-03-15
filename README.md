@@ -25,7 +25,7 @@ This repository is my first practice to implement a simple NBA boxscrore extensi
   ![](./src/img/demo-3.png)
 3. A few second later, you will see the games in the status bar (ledt-bottom side).
 4. Click the item in the status bar and you will see the menu of all games.
-    ![](/src/img/demo-4.png)
+  ![](/src/img/demo-4.png)
 5. To see the detail of the game, you can click the game in the menu.
 
 ---
