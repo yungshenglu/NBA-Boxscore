@@ -5,7 +5,7 @@
   "extension.ClickShowMatches": "点击显示今日 NBA 赛事",
   "extension.Exit": "离开 NBA-Boxscore",
   "extension.ShowMenu": "显示今日 NBA 赛程",
-  "extension.ShowHistory": "显示过去 NBA 赛程",
+  "extension.SearchHistory": "搜索过去 NBA 赛程",
   "extension.Player": "球员",
   "extension.Position": "位置",
   "extension.PlayingTime": "上场",
@@ -169,5 +169,8 @@
   "extension.RegularSeason": "例行赛",
   "extension.AllStarGame": "全明星赛",
   "extension.Playoffs": "季后赛",
-  "extension.Finals": "总决赛"
+  "extension.Finals": "总决赛",
+  "extension.DatePrompt": "请输入赛事时间",
+  "extension.HistoryGames": "历史赛事",
+  "extension.IncorrectDateFormat": "日期格式错误。"
 }

@@ -5,7 +5,7 @@
   "extension.ClickShowMatches": "今日のゲームを表示するにはクリックしてください",
   "extension.Exit": "NBA-Boxscoreを終了",
   "extension.ShowMenu": "今日のゲームを表示",
-  "extension.ShowHistory": "過去のゲームを表示",
+  "extension.SearchHistory": "過去に検索ゲーム",
   "extension.Player": "名前",
   "extension.Position": "POS",
   "extension.PlayingTime": "MIN",
@@ -169,5 +169,8 @@
   "extension.RegularSeason": "レギュラーシーズン",
   "extension.AllStarGame": "オールスターゲーム",
   "extension.Playoffs": "プレーオフ",
-  "extension.Finals": "ファイナル"
+  "extension.Finals": "ファイナル",
+  "extension.DatePrompt": "ゲームの日付を入力します。",
+  "extension.HistoryGames": "歴史ゲーム",
+  "extension.IncorrectDateFormat": "不正な日付形式。"
 }

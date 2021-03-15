@@ -5,7 +5,7 @@
   "extension.ClickShowMatches": "Click to show games today",
   "extension.Exit": "Exit NBA-Boxscore",
   "extension.ShowMenu": "Show games today",
-  "extension.ShowHistory": "Show games in the past",
+  "extension.SearchHistory": "Search games in the past",
   "extension.Player": "Player",
   "extension.Position": "POS",
   "extension.PlayingTime": "MIN",
@@ -169,5 +169,8 @@
   "extension.RegularSeason": "Regular Season",
   "extension.AllStarGame": "All-Star Game",
   "extension.Playoffs": "Playoffs",
-  "extension.Finals": "Finals"
+  "extension.Finals": "Finals",
+  "extension.DatePrompt": "Enter the date of game",
+  "extension.HistoryGames": "History Games",
+  "extension.IncorrectDateFormat": "Incorrect date format."
 }

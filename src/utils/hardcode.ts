@@ -23,7 +23,8 @@ export const SCHEDULE = [
     key: '2',
     name: 'AllStarGame',
     start: '2021-03-07',
-    end: '2021-03-07'
+    end: '2021-03-07',
+    arena: 'ATL'
   },
   {
     key: '3',

@@ -30,8 +30,8 @@
         "title": "%extension.ShowMenu%"
       },
       {
-        "command": "nba-boxscore.showHistory",
-        "title": "%extension.ShowHistory%"
+        "command": "nba-boxscore.searchHistory",
+        "title": "%extension.SearchHistory%"
       }
     ],
     "keybindings": [
@@ -48,7 +48,7 @@
         "key": "ctrl+shift+m"
       },
       {
-        "command": "nba-boxscore.showHistory",
+        "command": "nba-boxscore.searchHistory",
         "key": "ctrl+shift+h"
       }
     ],

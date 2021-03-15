@@ -1,9 +1,9 @@
 import localize from './localize';
-import { IGamePlayerProps } from './gamePlayer';
+import { IPlayerProps } from './player';
 
 export class RenderStatTable {
   /* Props & Constructor */
-  private _props: IGamePlayerProps;
+  private _props: IPlayerProps;
 
   constructor() {
     this._props = {
@@ -29,7 +29,7 @@ export class RenderStatTable {
   /* Getters */
   get tableHeader(): string {
     let tableHeader = '';
-    let propsKey: keyof IGamePlayerProps;
+    let propsKey: keyof IPlayerProps;
     for (propsKey in this._props) {
       tableHeader = tableHeader + ((propsKey === 'player') ? `
         <th data-field="${propsKey}" class="two wide">

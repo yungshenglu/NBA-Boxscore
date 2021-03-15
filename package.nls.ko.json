@@ -5,7 +5,7 @@
   "extension.ClickShowMatches": "오늘 게임을 표시하려면 클릭",
   "extension.Exit": "NBA-박스 스코어를 종료",
   "extension.ShowMenu": "쇼 게임 오늘",
-  "extension.ShowHistory": "과거에보기 게임",
+  "extension.SearchHistory": "과거에 게임 검색",
   "extension.Player": "NAME",
   "extension.Position": "POS",
   "extension.PlayingTime": "MIN",
@@ -169,5 +169,8 @@
   "extension.RegularSeason": "정규 시즌",
   "extension.AllStarGame": "올스타전",
   "extension.Playoffs": "플레이 오프",
-  "extension.Finals": "파이널"
+  "extension.Finals": "파이널",
+  "extension.DatePrompt": "게임의 날짜를 입력합니다",
+  "extension.HistoryGames": "역사 게임",
+  "extension.IncorrectDateFormat": "잘못된 날짜 형식."
 }

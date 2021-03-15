@@ -5,7 +5,7 @@
   "extension.ClickShowMatches": "點擊顯示今日 NBA 賽事",
   "extension.Exit": "離開 NBA-Boxscore",
   "extension.ShowMenu": "顯示今日 NBA 賽程",
-  "extension.ShowHistory": "顯示過去 NBA 賽程",
+  "extension.SearchHistory": "搜索過去 NBA 賽程",
   "extension.Player": "球員",
   "extension.Position": "位置",
   "extension.PlayingTime": "上場",
@@ -169,5 +169,8 @@
   "extension.RegularSeason": "例行賽",
   "extension.AllStarGame": "全明星賽",
   "extension.Playoffs": "季後賽",
-  "extension.Finals": "總決賽"
+  "extension.Finals": "總決賽",
+  "extension.DatePrompt": "請輸入賽事時間",
+  "extension.HistoryGames": "歷史賽事",
+  "extension.IncorrectDateFormat": "日期格式錯誤。"
 }

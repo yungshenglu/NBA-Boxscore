@@ -1,19 +1,19 @@
+import { isAllStarGameDate } from './utils';
 import { GameProfile } from './gameProfile';
-import { Score } from './score';
+import { Boxscore } from './boxscore';
 import { Team } from './team';
 
 interface IMatchProps {
   /**
    * gameProfile  : 該場賽事資訊
-   * gameId       : 該場賽事編號
    * boxscore     : 該場賽事計分
    * homeTeam     : 主場隊伍
    * awayTeam     : 客場隊伍
    * label        : 該場賽事標籤
+   * code         : VSCode 選單編號
    */
   gameProfile: GameProfile;
-  gameId: string;
-  score: Score;
+  boxscore: Boxscore;
   homeTeam: Team;
   awayTeam: Team;
   label: string;
@@ -22,14 +22,19 @@ export class Match implements IMatchProps {
   /* Props & Constructor */
   private _props: IMatchProps;
 
-  constructor(props: any) {
+  constructor(data: any) {
+    const gameDateTime = data.profile.dateTimeEt;
+    const isAllStarGame = isAllStarGameDate(gameDateTime);
+    const matchScore = {
+      homeTeam: data.homeTeam.score,
+      awayTeam: data.awayTeam.score
+    };
     this._props = {
-      gameProfile: new GameProfile(props.profile, props.homeTeam.profile.abbr),
-      gameId: props.profile.gameId,
-      score: new Score(props.boxscore, props.profile.dateTimeEt),
-      homeTeam: new Team(props.homeTeam),
-      awayTeam: new Team(props.awayTeam),
-      label: '',
+      gameProfile: new GameProfile(data.profile, data.homeTeam.profile.abbr, isAllStarGame),
+      boxscore: new Boxscore(data.boxscore, matchScore, gameDateTime),
+      homeTeam: new Team(data.homeTeam, gameDateTime),
+      awayTeam: new Team(data.awayTeam, gameDateTime),
+      label: ''
     };
 
     // Set current match label
@@ -40,11 +45,8 @@ export class Match implements IMatchProps {
   get gameProfile(): GameProfile {
     return this._props.gameProfile;
   }
-  get gameId(): string {
-    return this._props.gameId;
-  }
-  get score(): Score {
-    return this._props.score;
+  get boxscore(): Boxscore {
+    return this._props.boxscore;
   }
   get homeTeam(): Team {
     return this._props.homeTeam;
@@ -55,12 +57,12 @@ export class Match implements IMatchProps {
   get label(): string {
     return this._props.label;
   }
-  get matchStatusText(): string {
-    return `${this._props.awayTeam.profile.abbr}  ${this._props.awayTeam.boxscore.finalScore} : ${this._props.homeTeam.boxscore.finalScore}  ${this._props.homeTeam.profile.abbr}`;
+  get code(): string {
+    return this._props.gameProfile.gameId;
   }
 
   /* Methods */
   public setMatchLabel() {
-    this._props.label = this.matchStatusText;
+    this._props.label = `${this._props.awayTeam.profile.abbr}  ${this._props.boxscore.homeScore.finalScore} : ${this._props.boxscore.awayScore.finalScore}  ${this._props.homeTeam.profile.abbr}`;
   }
 }

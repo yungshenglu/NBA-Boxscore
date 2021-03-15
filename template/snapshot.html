@@ -57,7 +57,9 @@
               <h1 class="ui center aligned header">
                 <div class="content">
                   ${awayTeamFinalScore}
-                  <div class="sub header">${timeouts}</div>
+                  <div class="sub header">
+                    Timeouts
+                  </div>
                 </div>
               </h1>
             </div>
@@ -94,7 +96,9 @@
               <h1 class="ui center aligned header">
                 <div class="content">
                   ${homeTeamFinalScore}
-                  <div class="sub header">${timeouts}</div>
+                  <div class="sub header">
+                    Timeouts
+                  </div>
                 </div>
               </h1>
             </div>
@@ -122,7 +126,7 @@
       <div class="ui bottom attached center aligned secondary inverted raised horizontal segment">
         <div class="ui grid">
           <div class="eight wide column">
-            ${gameDateTime}&nbsp;&nbsp;|&nbsp;&nbsp;
+            ${gameDateTime} ET&nbsp;&nbsp;|&nbsp;&nbsp;
             <div class="ui basic horizontal label">
               ${gameType}
             </div>
@@ -139,8 +143,15 @@
     <!-- Statistics -->
     <div class="ui container">
       <div class="ui top grey inverted compact menu">
-        <a class="active blue item" data-tab="away">${awayTeamAbbrName} (A)</a>
-        <a class="blue item" data-tab="home">${homeTeamAbbrName} (H)</a>
+        <a class="active blue item" data-tab="away">
+          ${awayTeamAbbrName} (A)
+        </a>
+        <a class="blue item" data-tab="home">
+          ${homeTeamAbbrName} (H)
+        </a>
+        <a class="blue item" data-tab="compare">
+          Comparison
+        </a>
       </div>
 
       <!-- Away Team -->
@@ -157,6 +168,18 @@
 
       <!-- Home Team -->
       <div class="ui bottom secondary inverted tab raised segment" data-tab="home">
+        <table class="ui selectable inverted compacted small table">
+          <thead>
+            ${statTableHeader}
+          </thead>
+          <tbody>
+            ${homeTeamStat}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 球隊數據比較 -->
+      <div class="ui bottom secondary inverted tab raised segment" data-tab="compare">
         <table class="ui selectable inverted compacted small table">
           <thead>
             ${statTableHeader}

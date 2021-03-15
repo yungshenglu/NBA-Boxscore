@@ -24,10 +24,14 @@ export class GameProfile implements IGameProfile {
   /* Props & Constructor */
   private _props: IGameProfile;
 
-  constructor(props: any, homeTeamCode: string) {
+  constructor(props: any, homeTeamCode: string, isAllStarGame: boolean) {
     this._props = {
-      arenaLocation: localize(`extension.ArenaLocation${homeTeamCode}`),
-      arenaName: localize(`extension.ArenaName${homeTeamCode}`),
+      arenaLocation: isAllStarGame
+        ? localize(`extension.ArenaLocation${SCHEDULE.find(item => item.key === '2')?.arena}`)
+        : localize(`extension.ArenaLocation${homeTeamCode}`),
+      arenaName: isAllStarGame
+        ? localize(`extension.ArenaName${SCHEDULE.find(item => item.key === '2')?.arena}`)
+        : localize(`extension.ArenaName${homeTeamCode}`),
       gameId: props.gameId,
       gameDateTime: this.mapGameDateTimeFormat(props.dateTimeEt),
       gameType: localize(`extension.${this.mapGameType(props.dateTimeEt)}`),
@@ -66,7 +70,14 @@ export class GameProfile implements IGameProfile {
 
   private mapGameType(dateTimeEt: string): string {
     let gameDate = dateTimeEt.split('T')[0];
-    let gameType = SCHEDULE.find(item => gameDate >= item.start && gameDate <= item.end)?.name || '';
+    let gameType = SCHEDULE.find(item =>
+      (gameDate === item.start && gameDate === item.end)
+    )?.name || '';
+    gameType = gameType === ''
+      ? SCHEDULE.find(item =>
+        (gameDate >= item.start && gameDate <= item.end)
+      )?.name || ''
+      : gameType;
     return gameType;
   }
 }

@@ -1,27 +1,29 @@
+import { isAllStarGameDate } from './utils';
 import { Profile } from './profile';
 import { Matchup } from './matchup';
-import { Boxscore } from './boxscore';
+import { Player } from './player';
 
 interface ITeamProps {
   /**
    * profile        : 隊伍資訊
    * matchup        : 對戰紀錄
-   * score          : 比分資訊
+   * players        : 球員比賽紀錄
    */
-  profile: Profile
-  matchup: Matchup
-  boxscore: Boxscore
+  profile: Profile;
+  matchup: Matchup;
+  gamePlayers: Array<Player>;
 }
 
 export class Team implements ITeamProps {
   /* Props & Constructor */
   private _props: ITeamProps;
 
-  constructor(props: any) {
+  constructor(data: any, gameDateTime: string) {
+    const isAllStarGame = isAllStarGameDate(gameDateTime);
     this._props = {
-      profile: new Profile(props.profile),
-      matchup: new Matchup(props.matchup),
-      boxscore: new Boxscore(props.score)
+      profile: new Profile(data.profile, isAllStarGame),
+      matchup: new Matchup(data.matchup, isAllStarGame),
+      gamePlayers: []
     };
   }
 
@@ -32,7 +34,12 @@ export class Team implements ITeamProps {
   get matchup(): Matchup {
     return this._props.matchup;
   }
-  get boxscore(): Boxscore {
-    return this._props.boxscore;
+  get gamePlayers(): Array<Player> {
+    return this._props.gamePlayers;
+  }
+
+  /* Setters */
+  set gamePlayers(gamePlayers: Array<Player>) {
+    this._props.gamePlayers = gamePlayers;
   }
 }
