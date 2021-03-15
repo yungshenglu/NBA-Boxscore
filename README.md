@@ -1,5 +1,7 @@
 # NBA-Boxscore (VSCode Extension)
 
+![](./src/img/demo-1.png)
+
 This repository is my first practice to implement a simple NBA boxscrore extension on Visual Studio Code (VSCode) using TypeScript. For now, we enable users to see the live score and further detail of daily matches.
 
 > HINT: If you have any questions, please feel free to ask me.
@@ -7,47 +9,39 @@ This repository is my first practice to implement a simple NBA boxscrore extensi
 ---
 ## Features
 
-> (To be updated.)
+### Show NBA Games Today (nba-boxscore.activate)
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+1. Open the command palette (`Ctrl+Shift+P`) and type `Show games today`.
+2. Then, you will see the score of the games in the status bar (left-bottom side).
+  ![](./src/img/demo-2.png)
+3. Click the item in the status bar and you will see the menu of all games today.
+  ![](/src/img/demo-4.png)
+4. To see the detail of the game, you can click the game in the menu.
 
-For example if there is an image subfolder under your extension project workspace:
+### Search History Games (nba-boxscore.searchHistory)
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. Open the command palette (`Ctrl+Shift+P`) and type `Search games in the past`.
+2. Enter the date that you want to search (Format: `YYYY-MM-DD`)
+  ![](./src/img/demo-3.png)
+3. A few second later, you will see the games in the status bar (ledt-bottom side).
+4. Click the item in the status bar and you will see the menu of all games.
+    ![](/src/img/demo-4.png)
+5. To see the detail of the game, you can click the game in the menu.
 
 ---
 ## Requirements
 
-> (To be updated.)
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Search "nba-boxscore" in Marketplace and install our extensions.
 
 ---
 ## Extension Settings
 
-> (To be updated.)
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
----
-## Release Notes
-
-> (To be updated.)
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-(To be updated.)
+* `nba-boxscore.activate`: Activate this extension
+* `nba-boxscore.showMenu`: Show all games today
+* `nba-boxscore.searchHistory`: Search the NBA games in the past
+* `nba-boxscore.exit`: Exit this extension
 
 ---
 ## Contributor

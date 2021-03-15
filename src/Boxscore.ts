@@ -89,7 +89,7 @@ export class Boxscore implements IBoxscoreProps {
           ? this._props.timeEt
           : localize('extension.Postpone');
       case '2': {
-        console.log('periodClock: ', this._props.periodClock);
+        // console.log('periodClock: ', this._props.periodClock);
         if (this._props.periodClock === '0.0') {
           return localize(`extension.Quarter${this._props.period}End`);
         } else if (this._props.periodClock === '') {

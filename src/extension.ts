@@ -108,7 +108,6 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
 			},
 			password: false
 		}).then(async (value) => {
-			// FIXME: 無法即時同步到選單
 			historyMatches = new DailyMatches({
 				matchesDate: value,
 				currMatchIndex: currMatchIndex
@@ -126,12 +125,7 @@ export function activate({ subscriptions }: vscode.ExtensionContext) {
 	 * Command: nba-boxscore.exit
 	 */
 	const exit = vscode.commands.registerCommand('nba-boxscore.exit', () => {
-		// Display a message box to the user
 		vscode.window.showInformationMessage(localize('extension.Exit'));
-
-		// TEST
-		// clearInterval(getTimer());
-		// this.getLivePage = {};
 		statusBarItem.text = '';
 	});
 
