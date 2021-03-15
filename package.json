@@ -9,9 +9,13 @@
   },
   "repository": "https://github.com/yungshenglu/NBA-Boxscore",
   "license": "GPL-3.0",
-  "icon": "src/img/icon.png",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
   "categories": [
-    "Other"
+    "Extension Packs"
   ],
   "activationEvents": [
     "onCommand:nba-boxscore.activate"
