@@ -2,6 +2,8 @@
 
 ![](src/img/demo-1.png)
 
+You can download [here](https://github.com/yungshenglu/NBA-Boxscore/releases/tag/v0.0.1)! 🎉
+
 This repository is my first practice to implement a simple NBA boxscore extension on Visual Studio Code (VSCode) using TypeScript. For now, we enable users to see the live score and further detail of daily matches.
 
 > HINT: If you have any questions, please feel free to ask me.
