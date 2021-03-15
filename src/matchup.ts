@@ -6,36 +6,36 @@ interface IMatchupProps {
    * seriesText   : (NOT SUPPORT)
    * wins         : 勝場數
    */
-  confRank: number;
-  divRank: number;
-  losses: number;
-  wins: number;
+  confRank: number | string;
+  divRank: number | string;
+  losses: number | string;
+  wins: number | string;
 }
 
 export class Matchup implements IMatchupProps {
   /* Props & Constructor */
   private _props: IMatchupProps;
 
-  constructor(props: IMatchupProps) {
+  constructor(props: IMatchupProps, isAllStarGame: boolean) {
     this._props = {
-      confRank: props.confRank,
-      divRank: props.divRank,
-      losses: props.losses,
-      wins: props.wins
+      confRank: isAllStarGame ? '' : props.confRank,
+      divRank: isAllStarGame ? '' : props.divRank,
+      losses: isAllStarGame ? 0 : props.losses,
+      wins: isAllStarGame ? 0 : props.wins
     };
   }
 
   /* Getters */
-  get confRank(): number {
+  get confRank(): number | string {
     return this._props.confRank;
   }
-  get divRank(): number {
+  get divRank(): number | string {
     return this._props.divRank;
   }
-  get losses(): number {
+  get losses(): number | string {
     return this._props.losses;
   }
-  get wins(): number {
+  get wins(): number | string {
     return this._props.wins;
   }
 }

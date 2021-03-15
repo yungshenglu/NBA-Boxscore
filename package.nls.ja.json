@@ -1,10 +1,11 @@
 {
-  "extension.Welcome": "NBA-Scoreboxようこそ！",
+  "extension.Welcome": "NBA-Boxscoreようこそ！",
   "extension.NoGameToday": "NBAでませんゲーム今日",
-  "extension.ShowMatches": "今日のゲームを表示",
+  "extension.Activate": "今日のゲームを表示",
   "extension.ClickShowMatches": "今日のゲームを表示するにはクリックしてください",
-  "extension.Exit": "NBA-Scoreboxを終了",
+  "extension.Exit": "NBA-Boxscoreを終了",
   "extension.ShowMenu": "今日のゲームを表示",
+  "extension.SearchHistory": "過去に検索ゲーム",
   "extension.Player": "名前",
   "extension.Position": "POS",
   "extension.PlayingTime": "MIN",
@@ -163,5 +164,13 @@
   "extension.Quarter3End": "Q3 終了",
   "extension.Quarter4End": "Q4 終了",
   "extension.Postpone": "後回し",
-  "extension.NoData": "データなし"
+  "extension.NoData": "データなし",
+  "extension.Preseason": "プレシーズン",
+  "extension.RegularSeason": "レギュラーシーズン",
+  "extension.AllStarGame": "オールスターゲーム",
+  "extension.Playoffs": "プレーオフ",
+  "extension.Finals": "ファイナル",
+  "extension.DatePrompt": "ゲームの日付を入力します。",
+  "extension.HistoryGames": "歴史ゲーム",
+  "extension.IncorrectDateFormat": "不正な日付形式。"
 }

@@ -1,14 +1,14 @@
 import localize from './localize';
-import { GamePlayer } from './gamePlayer';
+import { Score } from './score';
 import { Team } from './team';
 import { RenderStatTable } from './renderStatTable';
 
 interface IMarkupProps {
   /**
-   * gamePlayers    : 球隊隊員
-   * team           : 隊伍
+   * score          : 賽事分數統計
+   * team           : 賽事隊伍
    */
-  gamePlayers: GamePlayer[];
+  score: Score
   team: Team;
 }
 
@@ -18,14 +18,14 @@ export class Markup implements IMarkupProps {
 
   constructor(props: any) {
     this._props = {
-      gamePlayers: props.gamePlayers,
-      team: props.team,
+      score: props.score,
+      team: props.team
     };
   }
 
   /* Getters */
-  get gamePlayers(): GamePlayer[] {
-    return this._props.gamePlayers;
+  get score(): Score {
+    return this._props.score;
   }
   get team(): Team {
     return this._props.team;
@@ -36,7 +36,7 @@ export class Markup implements IMarkupProps {
         <td>
           ${this._props.team.profile.code}
         </td>
-        ${this._props.team.boxscore.qScoresMarkup}
+        ${this._props.score.qScoresMarkup}
       </tr>
     `;
     return quarterScoreMarkup;
@@ -47,11 +47,11 @@ export class Markup implements IMarkupProps {
   }
   get teamStatMarkup(): string {
     let teamStatMarkup = '';
-    let isDataExist = this._props.gamePlayers.length > 0;
+    let isDataExist = this._props.team.gamePlayers.length > 0;
     if (isDataExist) {
-      for (let i = 0; i < this._props.gamePlayers.length; ++i) {
-        let gamePlayer = new GamePlayer(this._props.gamePlayers[i]);
-        teamStatMarkup += gamePlayer.statMarkup;
+      const gamePlayers = this._props.team.gamePlayers;
+      for (let i = 0; i < gamePlayers.length; ++i) {
+        teamStatMarkup += gamePlayers[i].statMarkup;
       }
     } else {
       teamStatMarkup = `

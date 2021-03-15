@@ -1,4 +1,46 @@
 /**
+ * 當季 NBA 重要賽程日期 (需手動更新)
+ * 0: 熱身賽
+ * 1: 例行賽
+ * 2: 全明星賽
+ * 3: 季後賽
+ * 4: 總決賽
+ */
+export const SCHEDULE = [
+  {
+    key: '0',
+    name: 'Preseason',
+    start: '2020-12-11',
+    end: '2020-12-19'
+  },
+  {
+    key: '1',
+    name: 'RegularSeason',
+    start: '2020-12-22',
+    end: '2021-05-16'
+  },
+  {
+    key: '2',
+    name: 'AllStarGame',
+    start: '2021-03-07',
+    end: '2021-03-07',
+    arena: 'ATL'
+  },
+  {
+    key: '3',
+    name: 'Playoffs',
+    start: '2021-05-22',
+    end: '2021-07-06'
+  },
+  {
+    key: '4',
+    name: 'Finals',
+    start: '2021-07-08',
+    end: '2021-07-22'
+  }
+];
+
+/**
  * API 網址
  * 0: 當日所有賽事
  * 1: 該廠賽事紀錄

@@ -1,10 +1,11 @@
 {
-  "extension.Welcome": "Welcome NBA-Scorebox!",
+  "extension.Welcome": "Welcome NBA-Boxscore!",
   "extension.NoGameToday": "No games today in NBA",
-  "extension.ShowMatches": "Show games today",
+  "extension.Activate": "Show games today",
   "extension.ClickShowMatches": "Click to show games today",
-  "extension.Exit": "Exit NBA-Scorebox",
+  "extension.Exit": "Exit NBA-Boxscore",
   "extension.ShowMenu": "Show games today",
+  "extension.SearchHistory": "Search games in the past",
   "extension.Player": "Player",
   "extension.Position": "POS",
   "extension.PlayingTime": "MIN",
@@ -163,5 +164,13 @@
   "extension.Quarter3End": "Q3 End",
   "extension.Quarter4End": "Q4 End",
   "extension.Postpone": "Postpone",
-  "extension.NoData": "No data"
+  "extension.NoData": "No data",
+  "extension.Preseason": "Preseason",
+  "extension.RegularSeason": "Regular Season",
+  "extension.AllStarGame": "All-Star Game",
+  "extension.Playoffs": "Playoffs",
+  "extension.Finals": "Finals",
+  "extension.DatePrompt": "Enter the date of game",
+  "extension.HistoryGames": "History Games",
+  "extension.IncorrectDateFormat": "Incorrect date format."
 }

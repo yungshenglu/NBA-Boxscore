@@ -24,15 +24,19 @@ export class Profile implements IProfileProps {
   /* Props & Constructor */
   private _props: IProfileProps;
 
-  constructor(props: any) {
+  constructor(data: any, isAllStarGame: boolean) {
     this._props = {
-      abbr: localize(`extension.TeamAbbr${props.abbr}`),
-      city: localize(`extension.City${props.abbr}`),
-      code: props.abbr,
-      conference: localize(`extension.Conf${props.conference}`),
-      division: localize(`extension.Div${this.mapDivison(props.division)}`),
-      name: localize(`extension.TeamAbbr${props.abbr}`),
-      logoUrl: this.mapLogoUrl(props.abbr)
+      abbr: isAllStarGame
+        ? `Team ${data.nameEn}`
+        : localize(`extension.TeamAbbr${data.abbr}`),
+      city: localize(`extension.City${data.abbr}`),
+      code: data.abbr,
+      conference: localize(`extension.Conf${data.conference}`),
+      division: localize(`extension.Div${this.mapDivison(data.division)}`),
+      name: isAllStarGame
+        ? `Team ${data.nameEn}`
+        : localize(`extension.TeamAbbr${data.abbr}`),
+      logoUrl: this.mapLogoUrl(data.abbr)
     };
   }
 

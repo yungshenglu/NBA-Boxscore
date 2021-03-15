@@ -1,7 +1,7 @@
 import localize from './localize';
 import { PLAYER_POSITION } from './utils/hardcode';
 
-export interface IGamePlayerProps {
+export interface IPlayerProps {
   /**
    * player         : 姓名
    * position       : 位置
@@ -38,38 +38,37 @@ export interface IGamePlayerProps {
   plusMinus: string;
 }
 
-export class GamePlayer implements IGamePlayerProps {
+export class Player implements IPlayerProps {
   /* Props & Constructor */
-  private _props: IGamePlayerProps;
+  private _props: IPlayerProps;
 
-  constructor(props: any) {
-    let playerPositon = this.mapPlayerPosition(props.boxscore.position);
+  constructor(data: any) {
+    let playerPositon = this.mapPlayerPosition(data.boxscore.position);
 
     this._props = {
-      player: props.profile.displayNameEn,
+      player: data.profile.displayNameEn,
       position: playerPositon ? localize(`extension.Position${playerPositon}`) : '',
-      playingTime: this.makePlayingTime(props) || '-',
-      points: props.statTotal.points || 0,
-      rebs: props.statTotal.rebs || 0,
-      assists: props.statTotal.assists || 0,
-      steals: props.statTotal.steals || 0,
-      blocks: props.statTotal.blocks || 0,
-      fg: this.makeStatText(props.statTotal.fgm, props.statTotal.fga, props.statTotal.fgpct),
-      tp: this.makeStatText(props.statTotal.tpm, props.statTotal.tpa, props.statTotal.tppct),
-      ft: this.makeStatText(props.statTotal.ftm, props.statTotal.fta, props.statTotal.ftpct),
-      offRebs: props.statTotal.offRebs || 0,
-      defRebs: props.statTotal.defRebs || 0,
-      turnovers: props.statTotal.turnovers || 0,
-      fouls: props.statTotal.fouls || 0,
-      plusMinus: props.boxscore.plusMinus || '-',
+      playingTime: this.makePlayingTime(data) || '-',
+      points: data.statTotal.points || 0,
+      rebs: data.statTotal.rebs || 0,
+      assists: data.statTotal.assists || 0,
+      steals: data.statTotal.steals || 0,
+      blocks: data.statTotal.blocks || 0,
+      fg: this.makeStatText(data.statTotal.fgm, data.statTotal.fga, data.statTotal.fgpct),
+      tp: this.makeStatText(data.statTotal.tpm, data.statTotal.tpa, data.statTotal.tppct),
+      ft: this.makeStatText(data.statTotal.ftm, data.statTotal.fta, data.statTotal.ftpct),
+      offRebs: data.statTotal.offRebs || 0,
+      defRebs: data.statTotal.defRebs || 0,
+      turnovers: data.statTotal.turnovers || 0,
+      fouls: data.statTotal.fouls || 0,
+      plusMinus: data.boxscore.plusMinus || '-',
     };
   }
 
   /* Getters */
   get statMarkup(): string {
     let playerStat = '';
-    let propsKey: keyof IGamePlayerProps;
-    // console.log('this._props: ', this._props);
+    let propsKey: keyof IPlayerProps;
 
     for (propsKey in this._props) {
       if (propsKey === 'position') {
@@ -95,54 +94,54 @@ export class GamePlayer implements IGamePlayerProps {
     `;
   }
 
-  /* Setters */
-  set player(player: string) {
-    this._props.player = player;
+  /* Getters */
+  get player(): string {
+    return this._props.player;
   }
-  set position(position: string) {
-    this._props.position = position;
+  get position(): string {
+    return this._props.position;
   }
-  set playingTime(playingTime: string) {
-    this._props.playingTime = playingTime || '-';
+  get playingTime(): string {
+    return this._props.playingTime;
   }
-  set points(points: number) {
-    this._props.points = points || 0;
+  get points(): string | number {
+    return this._props.points;
   }
-  set rebs(rebs: number) {
-    this._props.rebs = rebs || 0;
+  get rebs(): string | number {
+    return this._props.rebs;
   }
-  set assists(assists: number) {
-    this._props.assists = assists || 0;
+  get assists(): string | number {
+    return this._props.assists;
   }
-  set steals(steals: number) {
-    this._props.steals = steals || 0;
+  get steals(): string | number {
+    return this._props.steals;
   }
-  set blocks(blocks: number) {
-    this._props.blocks = blocks || 0;
+  get blocks(): string | number {
+    return this._props.blocks;
   }
-  set fg(fg: string) {
-    this._props.fg = fg || '-';
+  get fg(): string {
+    return this._props.fg;
   }
-  set tp(tp: string) {
-    this._props.tp = tp || '-';
+  get tp(): string {
+    return this._props.tp;
   }
-  set ft(ft: string) {
-    this._props.ft = ft || '-';
+  get ft(): string {
+    return this._props.ft;
   }
-  set offRebs(offRebs: number) {
-    this._props.offRebs = offRebs || 0;
+  get offRebs(): string | number {
+    return this._props.offRebs;
   }
-  set defRebs(defRebs: number) {
-    this._props.defRebs = defRebs || 0;
+  get defRebs(): string | number {
+    return this._props.defRebs;
   }
-  set turnovers(turnovers: number) {
-    this._props.turnovers = turnovers || 0;
+  get turnovers(): string | number {
+    return this._props.turnovers;
   }
-  set fouls(fouls: number) {
-    this._props.fouls = fouls || 0;
+  get fouls(): string | number {
+    return this._props.fouls;
   }
-  set plusMinus(plusMinus: string) {
-    this._props.plusMinus = plusMinus || '-';
+  get plusMinus(): string {
+    return this._props.plusMinus;
   }
 
   /* Methods */

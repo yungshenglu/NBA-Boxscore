@@ -9,12 +9,12 @@ interface IDailyMatchesProps {
 	 * matchesList 					: 當日所有賽事
 	 * matchesScoreList			: 當日所有賽事的比分
 	 * isAllMatchesFinish		: 是否當日所有賽事已結束
-	 * timer								: 時間 (NOT SUPPORT)
+	 * timer								: 更新時間
 	 * currMatchIndex				:
 	 */
 	matchesDate: string;
-	matchesList: Match[];
-	matchesScoreList: string[];
+	matchesList: Array<Match>;
+	matchesScoreList: Array<string>;
 	isAllMatchesFinish: Boolean;
 	timer: any;
 	currMatchIndex: number
@@ -30,7 +30,7 @@ export class DailyMatches implements IDailyMatchesProps {
 			matchesList: [],
 			matchesScoreList: [],
 			isAllMatchesFinish: true,
-			timer: '',	// NOT SUPPORT
+			timer: null,
 			currMatchIndex: props.currMatchIndex
 		};
 	}
@@ -39,10 +39,10 @@ export class DailyMatches implements IDailyMatchesProps {
 	get matchesDate(): string {
 		return this._props.matchesDate;
 	}
-	get matchesList(): Match[] {
+	get matchesList(): Array<Match> {
 		return this._props.matchesList;
 	}
-	get matchesScoreList(): string[] {
+	get matchesScoreList(): Array<string> {
 		return this._props.matchesScoreList;
 	}
 	get isAllMatchesFinish(): Boolean {
@@ -59,17 +59,17 @@ export class DailyMatches implements IDailyMatchesProps {
 	/* Methods */
 	private mapMatchesurl(gameDate: string): string {
 		let apiUrl = API_URL.find(item => item.name === 'matches')?.url || '';
-		let matchesUrl = apiUrl !== ''
+		const matchesUrl = apiUrl !== ''
 			? apiUrl.replace('{gameDate}', gameDate)
 			: apiUrl;
 		return matchesUrl;
 	}
 
 	public parseMatches(cb: Function) {
-		let url = this.mapMatchesurl(this._props.matchesDate);
+		const url = this.mapMatchesurl(this._props.matchesDate);
 		axios.get(url).then((res) => {
-			let dailyMatches = res.data.payload.date;
-			let dailyMatchesCount = dailyMatches ? dailyMatches.games.length : 0;
+			const dailyMatches = res.data.payload.date;
+			const dailyMatchesCount = dailyMatches ? dailyMatches.games.length : 0;
 			this._props.matchesScoreList = [];
 			this._props.matchesList = [];
 
@@ -78,11 +78,10 @@ export class DailyMatches implements IDailyMatchesProps {
 				return;
 			} else {
 				for (let i = 0; i < dailyMatchesCount; ++i) {
-					let match = new Match(dailyMatches.games[i]);
+					const match = new Match(dailyMatches.games[i]);
 					this._props.matchesList.push(match);
-					this._props.matchesScoreList.push(match.matchStatusText);
-					// TODO: need to check the status code
-					if (match.score.status === MATCH_STATUS[2].key) {
+					this._props.matchesScoreList.push(match.label);
+					if (match.boxscore.status === MATCH_STATUS[2].value) {
 						this._props.isAllMatchesFinish = false;
 					};
 				}

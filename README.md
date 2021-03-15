@@ -1,69 +1,56 @@
-# NBA-Boxscore VSCode Extension
+# NBA-Boxscore (VSCode Extension)
 
-This is the README for your extension "nba-boxscore". After writing up a brief description, we recommend including the following sections.
+![](./src/img/demo-1.png)
 
+This repository is my first practice to implement a simple NBA boxscrore extension on Visual Studio Code (VSCode) using TypeScript. For now, we enable users to see the live score and further detail of daily matches.
+
+> HINT: If you have any questions, please feel free to ask me.
+
+---
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Show NBA Games Today (nba-boxscore.activate)
 
-For example if there is an image subfolder under your extension project workspace:
+1. Open the command palette (`Ctrl+Shift+P`) and type `Show games today`.
+2. Then, you will see the score of the games in the status bar (left-bottom side).
+  ![](./src/img/demo-2.png)
+3. Click the item in the status bar and you will see the menu of all games today.
+  ![](/src/img/demo-4.png)
+4. To see the detail of the game, you can click the game in the menu.
 
-\!\[feature X\]\(images/feature-x.png\)
+### Search History Games (nba-boxscore.searchHistory)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. Open the command palette (`Ctrl+Shift+P`) and type `Search games in the past`.
+2. Enter the date that you want to search (Format: `YYYY-MM-DD`)
+  ![](./src/img/demo-3.png)
+3. A few second later, you will see the games in the status bar (ledt-bottom side).
+4. Click the item in the status bar and you will see the menu of all games.
+    ![](/src/img/demo-4.png)
+5. To see the detail of the game, you can click the game in the menu.
 
+---
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Search "nba-boxscore" in Marketplace and install our extensions.
 
+---
 ## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `nba-boxscore.activate`: Activate this extension
+* `nba-boxscore.showMenu`: Show all games today
+* `nba-boxscore.searchHistory`: Search the NBA games in the past
+* `nba-boxscore.exit`: Exit this extension
 
-## Known Issues
+---
+## Contributor
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+> NOTICE: You can follow the contributing process [CONTRIBUTING.md](CONTRIBUTING.md) to join me. I am very welcome for any issue!
 
-## Release Notes
+- [David Lu](https://github.com/yungshenglu)
 
-Users appreciate release notes as you update your extension.
+---
+## License
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
-
-
-//
-https://tw.global.nba.com/stats2/game/snapshot.json?countryCode=TW&gameId=0022000446&locale=zh_TW&tz=%2B8
+[GNU GENERAL PUBLIC LICENSE Version 3](LICENSE)

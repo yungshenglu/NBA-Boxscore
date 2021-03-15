@@ -12,14 +12,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:nba-boxscore.showMatches"
+    "onCommand:nba-boxscore.activate"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "nba-boxscore.showMatches",
-        "title": "%extension.ShowMatches%"
+        "command": "nba-boxscore.activate",
+        "title": "%extension.Activate%"
       },
       {
         "command": "nba-boxscore.exit",
@@ -28,18 +28,34 @@
       {
         "command": "nba-boxscore.showMenu",
         "title": "%extension.ShowMenu%"
+      },
+      {
+        "command": "nba-boxscore.searchHistory",
+        "title": "%extension.SearchHistory%"
       }
     ],
     "keybindings": [
       {
-        "command": "nba-boxscore.showMatches",
+        "command": "nba-boxscore.activate",
         "key": "ctrl+shift+l"
+      },
+      {
+        "command": "nba-boxscore.exit",
+        "key": "ctrl+shift+e"
+      },
+      {
+        "command": "nba-boxscore.showMenu",
+        "key": "ctrl+shift+m"
+      },
+      {
+        "command": "nba-boxscore.searchHistory",
+        "key": "ctrl+shift+h"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "nba-boxscore.showMatches"
+          "command": "nba-boxscore.activate"
         }
       ]
     }

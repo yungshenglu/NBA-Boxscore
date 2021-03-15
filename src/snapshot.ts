@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
-import { Markup } from './markup';
 import { Match } from './match';
+import { GameProfile } from './gameProfile';
+import { Player } from './player';
+import { Markup } from './markup';
 import { API_URL } from './utils/hardcode';
 
 const fs = require('fs');
@@ -12,19 +14,15 @@ const template = fs.readFileSync(path.join(__dirname, templatePath));
 
 interface ISnapshotProps {
   /**
-   * match                : 該場賽事資訊
-   * matchDate            : 該場賽事日期
-   * matchScore           : 該場賽事當下比分
-   * gameId               : 該場賽事 ID
+   * match                : 該場賽事
+   * gameId               : 該場賽事 ID (DEPRECATED)
    * snapshotHtml         : 該場賽事的 HTML
    * panel                : 該場賽事的分頁
-   * timer                : 時間 (NOT SUPPORT)
+   * timer                : 更新時間
    * isDisposed           : 分頁是否被開啟
    */
   match: Match;
-  matchDate: string;
-  matchScore: string;
-  gameId: string;
+  gameId: string; // DEPRECATED
   snapshotHtml: string;
   panel: any;
   timer: any;
@@ -35,15 +33,13 @@ export class Snapshot implements ISnapshotProps {
   /* Props & Constructor */
   private _props: ISnapshotProps;
 
-  constructor(props: any) {
+  constructor(match: Match) {
     this._props = {
-      match: props.match,
-      matchDate: props.matchDate,
-      matchScore: props.matchScore,
-      gameId: props.match.gameProfile.gameId,
+      match: match,
+      gameId: match.gameProfile.gameId,
       snapshotHtml: '',
       panel: '',
-      timer: '',  // NOT SUPPORT
+      timer: null,
       isDisposed: false
     };
   }
@@ -51,12 +47,6 @@ export class Snapshot implements ISnapshotProps {
   /* Getters */
   get match(): Match {
     return this._props.match;
-  }
-  get matchDate(): string {
-    return this._props.matchDate;
-  }
-  get matchScore(): string {
-    return this._props.matchScore;
   }
   get gameId(): string {
     return this._props.gameId;
@@ -67,7 +57,6 @@ export class Snapshot implements ISnapshotProps {
   get panel(): any {
     return this._props.panel;
   }
-  // NOT SUPPORT
   get timer(): any {
     return this._props.timer;
   }
@@ -78,7 +67,7 @@ export class Snapshot implements ISnapshotProps {
   /* Methods */
   private mapSnapshotUrl(gameId: string): string {
     let apiUrl = API_URL.find(item => item.name === 'snapshot')?.url || '';
-    let snapshotUrl = apiUrl !== ''
+    const snapshotUrl = apiUrl !== ''
       ? apiUrl.replace('{gameId}', gameId)
       : apiUrl;
     return snapshotUrl;
@@ -92,11 +81,12 @@ export class Snapshot implements ISnapshotProps {
     if (this._props.panel && !this._props.isDisposed) {
       // If we already have a panel, show it in the target column
       this._props.panel.reveal(existedPanel);
+      return;
     } else {
       this._props.isDisposed = false;
       this._props.panel = vscode.window.createWebviewPanel(
         this._props.gameId,
-        this._props.match.label,
+        '',
         existedPanel,
         {
           // Enable JavaScript in the Web-view
@@ -105,42 +95,55 @@ export class Snapshot implements ISnapshotProps {
           // localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'media'))]
         }
       );
+      // FIXME: Panel icon
       this._props.panel.onDidDispose(() => {
         this._props.isDisposed = true;
         clearTimeout(this._props.timer);
       });
       this._props.panel.onDidChangeViewState((e: any) => {
         const panel = e.webviewPanel;
-        panel.title = `${this._props.matchDate} | ${this._props.matchScore}`;
+        const matchDate = this._props.match.gameProfile.gameDateTime.split(' ')[0];
+        const matchScore = this._props.match.label;
+        panel.title = `${matchDate} ET | ${matchScore}`;
       });
     }
     this.setMarkupData();
   }
 
-  private setMarkupData() {
-    let url = this.mapSnapshotUrl(this._props.gameId);
-    axios.get(url).then((res) => {
-      console.log('res: ', res);
+  private updateGamePlayers(players: any, teamType: string) {
+    let team = this._props.match[teamType as keyof Match];
+    team.gamePlayers = [];
+    for (let i = 0; i < players.length; ++i) {
+      team.gamePlayers.push(new Player(players[i]));
+    }
+  }
 
-      let matchSnapshot = res.data.payload;
+  public setMarkupData() {
+    const url = this.mapSnapshotUrl(this._props.gameId);
+    axios.get(url).then((res) => {
+      const dataPayload = res.data.payload;
+      const homePlayers = dataPayload.homeTeam.gamePlayers;
+      const awayPlayers = dataPayload.awayTeam.gamePlayers;
+
+      this.updateGamePlayers(homePlayers, 'homeTeam');
+      this.updateGamePlayers(awayPlayers, 'awayTeam');
+
       const homeTeamMarkup = new Markup({
-        gamePlayers: matchSnapshot.homeTeam.gamePlayers,
+        score: this._props.match.boxscore.homeScore,
         team: this._props.match.homeTeam
       });
       const awayTeamMarkup = new Markup({
-        gamePlayers: matchSnapshot.awayTeam.gamePlayers,
+        score: this._props.match.boxscore.awayScore,
         team: this._props.match.awayTeam
       });
 
       // Render panel
       this._props.panel.webview.html = this.generatePanel(
         homeTeamMarkup,
-        awayTeamMarkup,
-        this._props.match
+        awayTeamMarkup
       );
+
       this._props.timer = setTimeout(() => {
-        console.log(homeTeamMarkup.team.boxscore.finalScore);
-        console.log(awayTeamMarkup.team.boxscore.finalScore);
         this.setMarkupData();
       }, 3000);
     }).catch((err) => {
@@ -148,7 +151,9 @@ export class Snapshot implements ISnapshotProps {
     });
   }
 
-  private generatePanel(homeTeam: Markup, awayTeam: Markup, match: Match): string {
+  private generatePanel(homeTeam: Markup, awayTeam: Markup): string {
+    const gameProfile = this._props.match.gameProfile;
+    const boxScore = this._props.match.boxscore;
     let resHtml = template;
 
     // Replace team name and abbr
@@ -173,13 +178,13 @@ export class Snapshot implements ISnapshotProps {
     resHtml = this.replaceMarkup(resHtml, '${awayTeamLogoUrl}', awayTeam.team.profile.logoUrl);
 
     // Replace game period and status
-    resHtml = this.replaceMarkup(resHtml, '${statusColor}', match.score.statusColor);
-    resHtml = this.replaceMarkup(resHtml, '${statusDesc}', match.score.statusDesc);
-    resHtml = this.replaceMarkup(resHtml, '${periodClock}', match.score.periodClock);
+    resHtml = this.replaceMarkup(resHtml, '${statusColor}', boxScore.statusColor);
+    resHtml = this.replaceMarkup(resHtml, '${statusDesc}', boxScore.statusDesc);
+    resHtml = this.replaceMarkup(resHtml, '${periodClock}', boxScore.periodClock);
 
     // Replace team score
-    resHtml = this.replaceMarkup(resHtml, '${homeTeamFinalScore}', homeTeam.team.boxscore.finalScore);
-    resHtml = this.replaceMarkup(resHtml, '${awayTeamFinalScore}', awayTeam.team.boxscore.finalScore);
+    resHtml = this.replaceMarkup(resHtml, '${homeTeamFinalScore}', boxScore.homeScore.finalScore);
+    resHtml = this.replaceMarkup(resHtml, '${awayTeamFinalScore}', boxScore.awayScore.finalScore);
     resHtml = this.replaceMarkup(resHtml, '${homeTeamQScores}', homeTeam.teamQScoresMarkup);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamQScores}', awayTeam.teamQScoresMarkup);
 
@@ -187,9 +192,13 @@ export class Snapshot implements ISnapshotProps {
     resHtml = this.replaceMarkup(resHtml, '${homeTeamAbbrName}', homeTeam.team.profile.abbr);
     resHtml = this.replaceMarkup(resHtml, '${awayTeamAbbrName}', awayTeam.team.profile.abbr);
 
+    // Replace date and type of game
+    resHtml = this.replaceMarkup(resHtml, '${gameDateTime}', gameProfile.gameDateTime);
+    resHtml = this.replaceMarkup(resHtml, '${gameType}', gameProfile.gameType);
+
     // Replace team profile
-    resHtml = this.replaceMarkup(resHtml, '${arenaName}', this._props.match.gameProfile.arenaName);
-    resHtml = this.replaceMarkup(resHtml, '${arenaLocation}', this._props.match.gameProfile.arenaLocation);
+    resHtml = this.replaceMarkup(resHtml, '${arenaName}', gameProfile.arenaName);
+    resHtml = this.replaceMarkup(resHtml, '${arenaLocation}', gameProfile.arenaLocation);
 
     // Replace game players statistics
     resHtml = this.replaceMarkup(resHtml, '${statTableHeader}', homeTeam.teamStatTableHeader);
