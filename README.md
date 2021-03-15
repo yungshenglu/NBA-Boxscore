@@ -1,8 +1,8 @@
 # NBA-Boxscore (VSCode Extension)
 
-![](./src/img/demo-1.png)
+![](src/img/demo-1.png)
 
-This repository is my first practice to implement a simple NBA boxscrore extension on Visual Studio Code (VSCode) using TypeScript. For now, we enable users to see the live score and further detail of daily matches.
+This repository is my first practice to implement a simple NBA boxscore extension on Visual Studio Code (VSCode) using TypeScript. For now, we enable users to see the live score and further detail of daily matches.
 
 > HINT: If you have any questions, please feel free to ask me.
 
@@ -13,19 +13,19 @@ This repository is my first practice to implement a simple NBA boxscrore extensi
 
 1. Open the command palette (`Ctrl+Shift+P`) and type `Show games today`.
 2. Then, you will see the score of the games in the status bar (left-bottom side).
-  ![](./src/img/demo-2.png)
+  ![](src/img/demo-2.png)
 3. Click the item in the status bar and you will see the menu of all games today.
-  ![](/src/img/demo-4.png)
+  ![](src/img/demo-4.png)
 4. To see the detail of the game, you can click the game in the menu.
 
 ### Search History Games (nba-boxscore.searchHistory)
 
 1. Open the command palette (`Ctrl+Shift+P`) and type `Search games in the past`.
 2. Enter the date that you want to search (Format: `YYYY-MM-DD`)
-  ![](./src/img/demo-3.png)
+  ![](src/img/demo-3.png)
 3. A few second later, you will see the games in the status bar (ledt-bottom side).
 4. Click the item in the status bar and you will see the menu of all games.
-  ![](/src/img/demo-4.png)
+  ![](src/img/demo-4.png)
 5. To see the detail of the game, you can click the game in the menu.
 
 ---

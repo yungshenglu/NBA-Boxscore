@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 import { Match } from './match';
-import { GameProfile } from './gameProfile';
 import { Player } from './player';
 import { Markup } from './markup';
 import { API_URL } from './utils/hardcode';
@@ -110,14 +109,6 @@ export class Snapshot implements ISnapshotProps {
     this.setMarkupData();
   }
 
-  private updateGamePlayers(players: any, teamType: string) {
-    let team = this._props.match[teamType as keyof Match];
-    team.gamePlayers = [];
-    for (let i = 0; i < players.length; ++i) {
-      team.gamePlayers.push(new Player(players[i]));
-    }
-  }
-
   public setMarkupData() {
     const url = this.mapSnapshotUrl(this._props.gameId);
     axios.get(url).then((res) => {
@@ -125,8 +116,17 @@ export class Snapshot implements ISnapshotProps {
       const homePlayers = dataPayload.homeTeam.gamePlayers;
       const awayPlayers = dataPayload.awayTeam.gamePlayers;
 
-      this.updateGamePlayers(homePlayers, 'homeTeam');
-      this.updateGamePlayers(awayPlayers, 'awayTeam');
+      let homeTeam = this._props.match.homeTeam;
+      let awayTeam = this._props.match.awayTeam;
+
+      homeTeam.gamePlayers = [];
+      for (let i = 0; i < homePlayers.length; ++i) {
+        homeTeam.gamePlayers.push(new Player(homePlayers[i]));
+      }
+      awayTeam.gamePlayers = [];
+      for (let i = 0; i < awayPlayers.length; ++i) {
+        awayTeam.gamePlayers.push(new Player(awayPlayers[i]));
+      }
 
       const homeTeamMarkup = new Markup({
         score: this._props.match.boxscore.homeScore,

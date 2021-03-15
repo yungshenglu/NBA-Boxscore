@@ -7,6 +7,7 @@
   "engines": {
     "vscode": "^1.50.0"
   },
+  "repository": "https://github.com/yungshenglu/NBA-Boxscore",
   "license": "GPL-3.0",
   "categories": [
     "Other"
@@ -73,6 +74,7 @@
     "fs-extra": "^8.0.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "9.0.7",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.0.0",
     "@types/node": "^12.11.7",

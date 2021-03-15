@@ -5,7 +5,7 @@ import { ILanguagePack } from "./model/language-pack.model";
 
 export class Localize {
   private bundle = this.resolveLanguagePack();
-  private options: { locale: string };
+  private options: any;
 
   public localize(key: string, ...args: string[]): string {
     const message = this.bundle[key] || key;
@@ -40,17 +40,17 @@ export class Localize {
 
     const rootPath = extensions.getExtension("yungshenglu.nba-boxscore")?.extensionPath;
     const resolvedLanguage = this.recurseCandidates(
-      rootPath,
+      rootPath || '',
       languageFormat,
       this.options.locale
     );
 
-    const languageFilePath = resolve(rootPath, resolvedLanguage);
+    const languageFilePath = resolve(rootPath || '', resolvedLanguage);
 
     try {
       const defaultLanguageBundle = JSON.parse(
         resolvedLanguage !== defaultLanguage
-          ? readFileSync(resolve(rootPath, defaultLanguage), "utf-8")
+          ? readFileSync(resolve(rootPath || '', defaultLanguage), "utf-8")
           : "{}"
       );
 

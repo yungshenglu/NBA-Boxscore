@@ -1,6 +1,6 @@
 # Release Notes
 
-## [v1.0.0]()
+## [v0.0.1]()
 
 - Enable to show NBA games today in the status bar
 - Enable to show the snapshot of the game by clicking the item in the menu
