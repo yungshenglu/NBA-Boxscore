@@ -9,6 +9,7 @@
   },
   "repository": "https://github.com/yungshenglu/NBA-Boxscore",
   "license": "GPL-3.0",
+  "icon": "src/img/icon.png",
   "categories": [
     "Other"
   ],
