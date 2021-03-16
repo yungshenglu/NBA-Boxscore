@@ -2,7 +2,7 @@
   "name": "nba-boxscore",
   "displayName": "NBA-Boxscore",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "yungshenglu",
   "engines": {
     "vscode": "^1.50.0"
