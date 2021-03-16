@@ -6,7 +6,7 @@ interface IScoreProps {
    * tp           : 三分 [tpm-tpa-tpp]
    * ft           : 罰球 [ftm-fta-ftp]
    */
-  qScores: number[];
+  qScores: Array<number>;
   finalScore: number;
   fg: string;
   tp: string;
@@ -33,7 +33,7 @@ export class Score implements IScoreProps {
   }
 
   /* Getters */
-  get qScores(): number[] {
+  get qScores(): Array<number> {
     return this._props.qScores;
   }
   get finalScore(): number {
@@ -58,6 +58,14 @@ export class Score implements IScoreProps {
   }
   get ft(): string {
     return this._props.ft;
+  }
+
+  /* Setters */
+  set finalScore(finalScore: number) {
+    this._props.finalScore = finalScore;
+  }
+  set qScores(qScores: Array<number>) {
+    this._props.qScores = qScores;
   }
 
   /* Methods */

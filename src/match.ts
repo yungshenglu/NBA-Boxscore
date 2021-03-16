@@ -63,6 +63,6 @@ export class Match implements IMatchProps {
 
   /* Methods */
   public setMatchLabel() {
-    this._props.label = `${this._props.awayTeam.profile.abbr}  ${this._props.boxscore.homeScore.finalScore} : ${this._props.boxscore.awayScore.finalScore}  ${this._props.homeTeam.profile.abbr}`;
+    this._props.label = `${this._props.awayTeam.profile.abbr}  ${this._props.boxscore.awayScore.finalScore} : ${this._props.boxscore.homeScore.finalScore}  ${this._props.homeTeam.profile.abbr}`;
   }
 }

@@ -94,7 +94,6 @@ export class Snapshot implements ISnapshotProps {
           // localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'media'))]
         }
       );
-      // FIXME: Panel icon
       this._props.panel.onDidDispose(() => {
         this._props.isDisposed = true;
         clearTimeout(this._props.timer);
@@ -128,13 +127,15 @@ export class Snapshot implements ISnapshotProps {
         awayTeam.gamePlayers.push(new Player(awayPlayers[i]));
       }
 
+      this.updateTeamScore(dataPayload.homeTeam.score, dataPayload.awayTeam.score);
+
       const homeTeamMarkup = new Markup({
         score: this._props.match.boxscore.homeScore,
-        team: this._props.match.homeTeam
+        team: homeTeam
       });
       const awayTeamMarkup = new Markup({
         score: this._props.match.boxscore.awayScore,
-        team: this._props.match.awayTeam
+        team: awayTeam
       });
 
       // Render panel
@@ -149,6 +150,27 @@ export class Snapshot implements ISnapshotProps {
     }).catch((err) => {
       console.log('[ERROR] ', err);
     });
+  }
+
+  private updateTeamScore(homeScore: any, awayScore: any) {
+    console.log('homeScore: ', homeScore);
+    // Update final score
+    this._props.match.boxscore.homeScore.finalScore = homeScore.score;
+    this._props.match.boxscore.awayScore.finalScore = awayScore.score;
+
+    // Update team score for each quarter
+    this._props.match.boxscore.homeScore.qScores = [
+      homeScore.q1Score,
+      homeScore.q2Score,
+      homeScore.q3Score,
+      homeScore.q4Score
+    ];
+    this._props.match.boxscore.awayScore.qScores = [
+      awayScore.q1Score,
+      awayScore.q2Score,
+      awayScore.q3Score,
+      awayScore.q4Score
+    ];
   }
 
   private generatePanel(homeTeam: Markup, awayTeam: Markup): string {
