@@ -152,8 +152,8 @@ export class Snapshot implements ISnapshotProps {
     });
   }
 
+  // TODO: Code refactor
   private updateTeamScore(homeScore: any, awayScore: any) {
-    console.log('homeScore: ', homeScore);
     // Update final score
     this._props.match.boxscore.homeScore.finalScore = homeScore.score;
     this._props.match.boxscore.awayScore.finalScore = awayScore.score;
